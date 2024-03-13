@@ -36,7 +36,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
             y = x[:,1:]
             with type_ctx:
                 with distributed_backend.get_context_for_microstep_forward(model=model, microstep_idx=microstep_idx, gradient_accumulation_steps=acc_steps):
-                    outputs = model(x, targets=y)
+                    outputs = model(x.to("cuda:0"), targets=y.to("cuda:0"))
             loss = outputs['loss'] / acc_steps
             loss.backward()
             substep += 1
