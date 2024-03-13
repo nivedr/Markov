@@ -8,7 +8,7 @@ import BPE
 # import LZW
 # import SplitBPE
 import sys
-sys.path.append('./tokenizer')
+sys.path.append('../optim')
 import utils
 import pickle
 import yaml
