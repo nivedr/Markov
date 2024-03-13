@@ -7,7 +7,7 @@ import Tokenizer
 import BPE
 # import LZW
 # import SplitBPE
-import utils
+import utils_tokenizer
 import pickle
 import yaml
 from pathlib import Path
