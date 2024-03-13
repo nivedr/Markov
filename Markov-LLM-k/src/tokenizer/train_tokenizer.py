@@ -73,18 +73,18 @@ def train_tokenizer(tokenizer, max_dict_size, p, q, order, dataset_size):
 
 # Commit tokenizer to file
 
-for trial_tok in range(n_trial_train_tok):
-	print(f'Trial number: {trial_tok}')
-	for model in models:
-		for max_dict_size in max_dict_size_list:
-			print(f'{model} and {max_dict_size}')
-			tokenizer = train_tokenizer(model, max_dict_size)
-			if save:
-				folder_path = Path.cwd() / f'./models/{model}/n_sample_train={n_sample_train}/max_dict_size={max_dict_size}/trial_tok={trial_tok}'
-				folder_path.mkdir(exist_ok=True, parents=True)
-				file_name = f'tokenizer.pickle'
-				with (folder_path / file_name).open('wb') as file:
-					pickle.dump(tokenizer, file)
-					file.close()
+# for trial_tok in range(n_trial_train_tok):
+# 	print(f'Trial number: {trial_tok}')
+# 	for model in models:
+# 		for max_dict_size in max_dict_size_list:
+# 			print(f'{model} and {max_dict_size}')
+# 			tokenizer = train_tokenizer(model, max_dict_size)
+# 			if save:
+# 				folder_path = Path.cwd() / f'./models/{model}/n_sample_train={n_sample_train}/max_dict_size={max_dict_size}/trial_tok={trial_tok}'
+# 				folder_path.mkdir(exist_ok=True, parents=True)
+# 				file_name = f'tokenizer.pickle'
+# 				with (folder_path / file_name).open('wb') as file:
+# 					pickle.dump(tokenizer, file)
+# 					file.close()
 
 
