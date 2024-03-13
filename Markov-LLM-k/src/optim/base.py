@@ -34,6 +34,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
             x, y = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=extra_args.device)
             x = tokenizer.encode_batch(x)
             y = x[:,1:]
+            x = x[:,:-1]
             with type_ctx:
                 with distributed_backend.get_context_for_microstep_forward(model=model, microstep_idx=microstep_idx, gradient_accumulation_steps=acc_steps):
                     outputs = model(x.to("cuda:0"), targets=y.to("cuda:0"))
