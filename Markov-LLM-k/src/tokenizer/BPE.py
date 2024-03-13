@@ -24,10 +24,10 @@ class BPE(Tokenizer.Tokenizer):
 		string_new = torch.empty(0)
 		while i < length:
 			if i < length-1 and string[i] == t1 and string[i+1] == t2:
-				string_new = torch.cat((string_new, tok), 0)
+				string_new = torch.cat((string_new, torch.tensor([tok])), 0)
 				i+=2
 			else:
-				string_new = torch.cat((string_new, string[i]), 0)
+				string_new = torch.cat((string_new, torch.tensor([string[i]])), 0)
 				i+=1
 		self._dset_tok = string_new
 		return string_new
@@ -39,10 +39,10 @@ class BPE(Tokenizer.Tokenizer):
 		string_new = torch.empty(0)
 		while i < len(string):
 			if string[i] == tok:
-				string_new = torch.cat((string_new, t1), 0)
-				string_new = torch.cat((string_new, t2), 0)
+				string_new = torch.cat((string_new, torch.tensor([t1])), 0)
+				string_new = torch.cat((string_new, torch.tensor([t2])), 0)
 			else:
-				string_new = torch.cat((string_new, string[i]), 0)
+				string_new = torch.cat((string_new, torch.tensor([string[i]])), 0)
 			i+=1
 		self._dset_tok = string_new
 		return string_new
