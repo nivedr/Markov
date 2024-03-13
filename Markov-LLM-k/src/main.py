@@ -8,6 +8,10 @@ import copy
 import argparse
 import random
 import wandb
+import sys
+sys.path.append('./tokenizer')
+import Tokenizer
+import BPE
 
 import config
 from models.base import AddBeta
@@ -45,6 +49,7 @@ def main(args):
     #P[:,1:] = I[:,:-1]
     p = args.p # 0... -> 1
     q = args.q # 1... -> 0
+    tokenizer = args.tokenizer
     order = args.order
     generator = torch.Generator(device=args.device)
 
@@ -124,7 +129,9 @@ def main(args):
     print(f"\nTraining model={args.model} \n{vars(args)}\n")
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
-    stats = train(model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, generator,
+
+    tokenizer_model = train_tokenizer(tokenizer, max_dict_size, p, q, order, dataset_size)
+    stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)

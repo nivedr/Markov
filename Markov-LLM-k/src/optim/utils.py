@@ -34,13 +34,15 @@ def get_next_symbols(p, q, data):
 
 
 @torch.no_grad()
-def eval(model, p, q, order, sequence_length, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
+def eval(model, tokenizer, p, q, order, sequence_length, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
 
     for _ in range(max_num_batches): 
         x, y = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device)
+        x = tokenizer.encode_batch(x)
+        y = x[:,1:]
         with ctx:
             outputs = model(x, targets=y, get_logits=True)
         val_loss = outputs['loss']
@@ -60,6 +62,8 @@ def eval_probs(model, p, q, order, sequence_length, generator, extra_args, devic
     loss_list_val, acc_list = [], []
 
     x, y = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device)
+    x = tokenizer.encode_batch(x)
+    y = x[:,1:]
     with ctx:
         outputs = model (x, targets=y, get_logits=True)
     val_loss = outputs['loss']
@@ -68,18 +72,18 @@ def eval_probs(model, p, q, order, sequence_length, generator, extra_args, devic
 
     probs = F.softmax(outputs['logits'], dim=-1)
 
-    xb = x[0]
-    probsb = probs[0, order-1:]
-    idx = xb[:-order+1]
-    vec0 = probsb[idx == 0][:,1] # estimated p
-    vec1 = probsb[idx == 1][:,0] # estimated q
-    prob_vec = [vec0, vec1]
+    # xb = x[0]
+    # probsb = probs[0, order-1:]
+    # idx = xb[:-order+1]
+    # vec0 = probsb[idx == 0][:,1] # estimated p
+    # vec1 = probsb[idx == 1][:,0] # estimated q
+    # prob_vec = [vec0, vec1]
 
     val_acc = torch.stack(acc_list).mean().item()
     val_loss = torch.stack(loss_list_val).mean().item()
     val_perplexity = 2.71828 ** val_loss
 
-    return val_acc, val_loss, val_perplexity, prob_vec
+    return val_acc, val_loss, val_perplexity#, prob_vec
 
 @torch.no_grad()
 def eval_sparse(model, P, sequence_length, batch_size, device='cpu', max_num_batches=24, ctx=nullcontext(), alpha_th=None, drop_k=None):
