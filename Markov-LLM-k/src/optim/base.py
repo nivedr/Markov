@@ -37,9 +37,9 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
             x = tokenizer.encode_batch(x)
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
-            print("Monket")
             with type_ctx:
                 with distributed_backend.get_context_for_microstep_forward(model=model, microstep_idx=microstep_idx, gradient_accumulation_steps=acc_steps):
+                    breakpoint()
                     outputs = model(x, targets=y)
             loss = outputs['loss'] / acc_steps
             loss.backward()
