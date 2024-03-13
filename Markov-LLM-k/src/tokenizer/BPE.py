@@ -20,15 +20,15 @@ class BPE(Tokenizer.Tokenizer):
 
         i=0
         length = string.size(dim=0)
-        string_new = torch.empty(0)
+        string_new = []
         while i < length:
             if i < length-1 and string[i] == t1 and string[i+1] == t2:
-                string_new = torch.cat((string_new, torch.tensor([tok])), 0)
+                string_new.append(tok)
                 i+=2
             else:
-                string_new = torch.cat((string_new, torch.tensor([string[i]])), 0)
+                string_new.append(string[i])
                 i+=1
-        self._dset_tok = string_new
+        self._dset_tok = torch.tensor(string_new)
         return string_new
 
     def unapply(self, string, tok):
@@ -38,12 +38,12 @@ class BPE(Tokenizer.Tokenizer):
         string_new = torch.empty(0)
         while i < len(string):
             if string[i] == tok:
-                string_new = torch.cat((string_new, torch.tensor([t1])), 0)
-                string_new = torch.cat((string_new, torch.tensor([t2])), 0)
+                string_new.append(t1)
+                string_new.append(t2)
             else:
-                string_new = torch.cat((string_new, torch.tensor([string[i]])), 0)
+                string_new.append(string[i])
             i+=1
-        self._dset_tok = string_new
+        self._dset_tok = torch.tensor(string_new)
         return string_new
 
 
@@ -64,9 +64,7 @@ class BPE(Tokenizer.Tokenizer):
         i=0
         while i < len(string)-1:
             t1 = string[i]
-            print(t1)
             t2 = string[i+1]
-            print(t2)
 
             if t1==t2 and not repeat:
                 count_mat[t1,t2] += 1
