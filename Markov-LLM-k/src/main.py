@@ -9,7 +9,7 @@ import argparse
 import random
 import wandb
 import sys
-sys.path.append('./tokenizer')
+sys.path.append('tokenizer')
 import train_tokenizer
 import Tokenizer
 import BPE
