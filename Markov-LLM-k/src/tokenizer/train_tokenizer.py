@@ -2,7 +2,7 @@ import numpy as np
 import itertools
 import collections
 import math
-import MarkovChain
+
 import Tokenizer
 import BPE
 # import LZW
