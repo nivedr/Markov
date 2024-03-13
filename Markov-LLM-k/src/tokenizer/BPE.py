@@ -131,7 +131,7 @@ class BPE(Tokenizer.Tokenizer):
         batch_size = batch.size(dim=0)
         enc = []
         for i in range(batch_size):
-            enc[i] = self.encode(batch[i,:])
+            enc.append(self.encode(batch[i,:]))
         nt = torch.nested.nested_tensor(enc)
         nt_padded = torch.nested.to_padded_tensor(nt, 0)
 
