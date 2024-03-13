@@ -41,7 +41,7 @@ def eval(model, tokenizer, p, q, order, sequence_length, batch_size, generator, 
 
     for _ in range(max_num_batches): 
         x, y = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device)
-        x = tokenizer.encode_batch(x)
+        x = tokenizer.encode_batch(x).to('cuda')
         y = x[:,1:]
         with ctx:
             outputs = model(x, targets=y, get_logits=True)
@@ -62,7 +62,7 @@ def eval_probs(model, p, q, order, sequence_length, generator, extra_args, devic
     loss_list_val, acc_list = [], []
 
     x, y = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device)
-    x = tokenizer.encode_batch(x)
+    x = tokenizer.encode_batch(x).to('cuda')
     y = x[:,1:]
     with ctx:
         outputs = model (x, targets=y, get_logits=True)
