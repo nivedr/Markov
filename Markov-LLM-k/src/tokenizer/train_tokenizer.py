@@ -53,7 +53,7 @@ from pathlib import Path
 
 
 # Instantiate tokenizer model
-def train_tokenizer(tokenizer, max_dict_size, p, q, order, dataset_size):
+def train_tokenizer(tokenizer, max_dict_size, p, q, order, generator, dataset_size):
 	print(f'Training tokenizer: {tokenizer}')
 	dataset, _ = utils.get_batch(p, q, order, seq_length=1, batch_size=dataset_size, generator=generator, extra_args=extra_args, device='cpu')
 	if model == 'Character':

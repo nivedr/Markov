@@ -133,7 +133,7 @@ def main(args):
 
     max_dict_size = 50
     dataset_size = 10000
-    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, dataset_size)
+    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator, dataset_size)
     stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
