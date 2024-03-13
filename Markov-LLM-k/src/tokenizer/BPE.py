@@ -65,7 +65,9 @@ class BPE(Tokenizer.Tokenizer):
 		i=0
 		while i < len(string)-1:
 			t1 = string[i]
+			print(t1)
 			t2 = string[i+1]
+            print(t2)
 
 			if t1==t2 and not repeat:
 				count_mat[t1,t2] += 1
