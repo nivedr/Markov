@@ -128,7 +128,7 @@ class BPE(Tokenizer.Tokenizer):
         return self._dset_tok
 	
     def encode_batch(self, batch):
-        batch_size = batch.size[0]
+        batch_size = batch.size(dim=0)
         enc = []
         for i in range(batch_size):
             enc[i] = self.encode(batch[i,:])
