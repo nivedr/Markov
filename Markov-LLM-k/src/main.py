@@ -10,6 +10,7 @@ import random
 import wandb
 import sys
 sys.path.append('./tokenizer')
+import train_tokenizer
 import Tokenizer
 import BPE
 
@@ -131,7 +132,7 @@ def main(args):
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     max_dict_size = 50
-    dataset_size = 100000
+    dataset_size = 10000
     tokenizer_model = train_tokenizer(tokenizer, max_dict_size, p, q, order, dataset_size)
     stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, generator,
                   eval_freq=args.eval_freq, 
