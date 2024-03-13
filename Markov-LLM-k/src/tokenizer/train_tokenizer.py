@@ -7,7 +7,9 @@ import Tokenizer
 import BPE
 # import LZW
 # import SplitBPE
-import utils_tokenizer
+import sys
+sys.path.append('./tokenizer')
+import utils
 import pickle
 import yaml
 from pathlib import Path
