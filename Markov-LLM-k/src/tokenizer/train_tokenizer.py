@@ -7,7 +7,10 @@ import Tokenizer
 import BPE
 # import LZW
 # import SplitBPE
-import utils_tokenizer
+
+import sys
+sys.path.append('./tokenizer')
+import utils
 
 import pickle
 import yaml
@@ -53,7 +56,7 @@ from pathlib import Path
 # Instantiate tokenizer model
 def train_tokenizer(tokenizer, max_dict_size, p, q, order, dataset_size):
 	print(f'Training tokenizer: {tokenizer}')
-	dataset, _ = utils_tokenizer.get_batch(p, q, order, seq_length=1, batch_size=dataset_size, generator=generator, extra_args=extra_args, device='cpu')
+	dataset, _ = utils.get_batch(p, q, order, seq_length=1, batch_size=dataset_size, generator=generator, extra_args=extra_args, device='cpu')
 	if model == 'Character':
 		tokenizer = Tokenizer.Tokenizer()
 		tokenizer.learn_dict()
