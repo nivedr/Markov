@@ -24,6 +24,7 @@ import distributed
 def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
+    parser.add_argument('--tokenizer', default='BPE', choices=config.registered_formats())
 
     args, rem_args = parser.parse_known_args()
 
@@ -129,7 +130,8 @@ def main(args):
     print(f"\nTraining model={args.model} \n{vars(args)}\n")
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
-
+    max_dict_size = 50
+    dataset_size = 100000
     tokenizer_model = train_tokenizer(tokenizer, max_dict_size, p, q, order, dataset_size)
     stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, generator,
                   eval_freq=args.eval_freq, 
