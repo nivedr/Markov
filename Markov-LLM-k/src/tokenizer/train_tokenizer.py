@@ -7,7 +7,6 @@ import Tokenizer
 import BPE
 # import LZW
 # import SplitBPE
-
 import sys
 sys.path.append('../optim')
 import utils
