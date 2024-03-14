@@ -44,6 +44,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
             loss = outputs['loss'] / acc_steps
             loss.backward()
             substep += 1
+            print(substep)
 
         if extra_args.grad_clip != 0.0:
             torch.nn.utils.clip_grad_norm_(model.parameters(), extra_args.grad_clip)
