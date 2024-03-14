@@ -42,7 +42,8 @@ def eval(model, tokenizer, p, q, order, sequence_length, batch_size, generator, 
     for _ in range(max_num_batches): 
         x, y = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device)
         x = tokenizer.encode_batch(x)
-        y = x[:,1:]
+        y = deepcopy(x[:,1:]).to("cuda")
+        x = deepcopy(x[:,:-1]).to("cuda")
         with ctx:
             outputs = model(x, targets=y, get_logits=True)
         val_loss = outputs['loss']
