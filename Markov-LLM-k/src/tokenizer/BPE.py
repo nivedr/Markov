@@ -18,18 +18,16 @@ class BPE(Tokenizer.Tokenizer):
     def apply(self, string, tok):
         t1,t2 = self.DS[tok-2]
 
-        i=0
         length = string.size(dim=0)
-        string_new = []
-        while i < length:
-            if i < length-1 and string[i] == t1 and string[i+1] == t2:
-                string_new.append(tok)
-                i+=2
-            else:
-                string_new.append(string[i])
-                i+=1
-        self._dset_tok = torch.tensor(string_new)
-        return string_new
+        mask = (string[:-1] == t1) & (string[:, 1:] == t2)
+        string[:-1][mask] = tok
+    
+        mask0 = deque(mask)
+        mask0.appendleft(0)
+        mask = list(mask0)
+
+        return string[mask[:-1]]
+
 
     def unapply(self, string, tok):
         t1,t2 = self.DS[tok-2]
