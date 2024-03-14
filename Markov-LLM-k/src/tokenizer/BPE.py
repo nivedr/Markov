@@ -4,6 +4,8 @@ import collections
 import math
 import Tokenizer
 import torch
+from collections import deque
+
 
 class BPE(Tokenizer.Tokenizer):
 
