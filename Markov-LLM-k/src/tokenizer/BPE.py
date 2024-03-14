@@ -19,7 +19,7 @@ class BPE(Tokenizer.Tokenizer):
         t1,t2 = self.DS[tok-2]
 
         length = string.size(dim=0)
-        mask = (string[:-1] == t1) & (string[:, 1:] == t2)
+        mask = (string[:-1] == t1) & (string[1:] == t2)
         string[:-1][mask] = tok
     
         mask0 = deque(mask)
