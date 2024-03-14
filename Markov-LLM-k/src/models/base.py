@@ -302,9 +302,9 @@ class GPTBase(nn.Module):
                 print(self.lm_head.weight)
             if self.config.vocab_size == 2 and self.config.bce:
                 logits_single = logits[:,:,1] - logits[:,:,0]
-                loss = F.binary_cross_entropy_with_logits(logits_single.view(-1), targets.float().view(-1))
+                loss = F.binary_cross_entropy_with_logits(logits_single.reshape(-1), targets.float().reshape(-1))
             else:
-                loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=-1)
+                loss = F.cross_entropy(logits.reshape(-1, logits.size(-1)), targets.reshape(-1), ignore_index=-1)
         else:
             # inference-time mini-optimization: only forward the lm_head on the very last position
             logits = self.lm_head(x[:, [-1], :]) # note: using list [-1] to preserve the time dim
