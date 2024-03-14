@@ -33,6 +33,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
     t0 = time.time()
     while itr < iterations:
         for microstep_idx in range(acc_steps):  # gradient accumulation
+            print(batch_size)
             x, y = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=extra_args.device)
             x = tokenizer.encode_batch(x)
             y = deepcopy(x[:,1:]).to("cuda")
