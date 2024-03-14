@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from contextlib import nullcontext, contextmanager, ExitStack
+from copy import deepcopy
 
 
 def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device='cpu'):
