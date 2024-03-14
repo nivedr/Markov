@@ -54,7 +54,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
         opt.zero_grad(set_to_none=True)
         itr += 1
 
-        if itr == iterations: #or itr % eval_freq == 0 # from here it's only evaluation code, all the training is above
+        if itr == iterations or itr % eval_freq == 0: # from here it's only evaluation code, all the training is above
             if distributed_backend.is_master_process():
                 t1 = time.time()
                 dt = t1 - t0
