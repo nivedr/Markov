@@ -134,6 +134,8 @@ def main(args):
     print(f"\nTraining model={args.model} \n{vars(args)}\n")
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
+    max_dict_size=args.max_dict_size
+    dataset_size=args.dataset_size
     cpu_generator = torch.Generator(device='cpu')
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
     stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, generator,
