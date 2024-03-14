@@ -5,6 +5,7 @@ from contextlib import nullcontext, contextmanager, ExitStack
 
 
 def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device='cpu'):
+    breakpoint()
     data = torch.zeros(batch_size, seq_length+1, device=device)
     if extra_args.initial == 'steady':
         alpha = q / (p+q)
