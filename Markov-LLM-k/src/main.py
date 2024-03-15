@@ -26,7 +26,7 @@ def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
     parser.add_argument('--tokenizer', default='BPE', choices=config.registered_formats())
-    parser.add_argument('--max_dict_size', default=20, choices=config.registered_formats())
+    parser.add_argument('--max_dict_size', default=25, choices=config.registered_formats())
     parser.add_argument('--dataset_size', default=10000, choices=config.registered_formats())
 
     args, rem_args = parser.parse_known_args()
