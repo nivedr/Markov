@@ -10,7 +10,7 @@ sys.path.append('../tokenizer')
 import Tokenizer
 import BPE
 from copy import deepcopy
-import pickle
+# import pickle
 
 
 from .utils import eval, eval_probs, get_batch, save_checkpoint
@@ -32,7 +32,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
     model.train()
 
     t0 = time.time()
-    val_loss_list = []
+    # val_loss_list = []
     while itr < iterations:
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device='cuda')
@@ -65,7 +65,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                 val_acc, val_loss, val_perplexity = eval(model, tokenizer, p, q, order, sequence_length, batch_size,
                                                         generator, extra_args, extra_args.device, max_num_batches=10, ctx=type_ctx)
                 print_string = f"{itr} [train] loss={train_loss:.3f} [val] loss={val_loss:.3f}, pp={val_perplexity:.2f}, acc={val_acc:3f}"
-                val_loss_list.append(val_loss)
+                # val_loss_list.append(val_loss)
                 print_string += f" [time per itr] {dt*1000/eval_freq:.2f}ms"
                 if scheduler is not None:
                     print_string += f" [lr] {current_lr:.5f}"
@@ -116,8 +116,8 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                         itr=itr,
                         ckpt_path=ckpt_path)
 
-    with open('val-loss-dump.pickle', 'wb') as handle:
-        pickle.dump(a, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    # with open('val-loss-dump.pickle', 'wb') as handle:
+    #     pickle.dump(a, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return stats
 
