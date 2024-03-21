@@ -118,7 +118,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                         ckpt_path=ckpt_path)
 
     with open('val-loss-dump.pickle', 'wb') as handle:
-        pickle.dump(a, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(val_loss_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return stats
 
