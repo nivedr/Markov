@@ -10,7 +10,7 @@ sys.path.append('../tokenizer')
 import Tokenizer
 import BPE
 from copy import deepcopy
-# import pickle
+import pickle
 
 
 from .utils import eval, eval_probs, get_batch, save_checkpoint
