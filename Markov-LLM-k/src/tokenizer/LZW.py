@@ -43,7 +43,7 @@ class LZW(Tokenizer.Tokenizer):
 	def encode(self, string):
 		enc = []
 
-		assert set(self._dset_tok).issubset(set(range(2))), "String contains elements outside alphabet"
+		assert set(string).issubset(set(range(2))), "String contains elements outside alphabet"
 		substr = self.DS[0]
 		for i in range(len(string)):
 			longer_exists = [C for C in substr.children if string[i]==C.data]
