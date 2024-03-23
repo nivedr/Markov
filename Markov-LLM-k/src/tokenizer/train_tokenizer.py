@@ -26,8 +26,8 @@ def train_tokenizer(tokenizer, max_dict_size, p, q, order, generator, dataset_si
         tokenizer = BPE.BPE(kappa=10, max_dict_size=max_dict_size)
         tokenizer.learn_dict(dset=dataset)
     elif tokenizer == 'LZW':
-        tokenizer = LZW.LZW(kappa=10, max_dict_size=max_dict_size)
+        tokenizer = LZW.LZW(max_dict_size=max_dict_size)
         tokenizer.learn_dict(dset=dataset)
     else:
-        raise ValueError('Tokenizer must be either Character, LZW, BPE or SplitBPE')
+        raise ValueError('Tokenizer must be either Character, LZW or BPE')
     return tokenizer
