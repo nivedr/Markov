@@ -62,6 +62,8 @@ class LZW(Tokenizer.Tokenizer):
 			enc.append(torch.tensor(self.encode(batch[i,:])))
 		nt = torch.nested.nested_tensor(enc)
 		nt_padded = torch.nested.to_padded_tensor(nt, 0)
+		
+		return nt_padded
 
 
 	def decode(self, string):
