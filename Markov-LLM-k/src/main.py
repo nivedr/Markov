@@ -138,8 +138,8 @@ def main(args):
     dataset_size=args.dataset_size
     cpu_generator = torch.Generator(device='cpu')
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
-    if tokenizer == 'LZW':
-        generator = cpu_generator
+    # if tokenizer == 'LZW':
+    #     generator = cpu_generator
     print("Training transformer...")
     stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, generator,
                   eval_freq=args.eval_freq, 
