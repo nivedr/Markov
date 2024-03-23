@@ -57,11 +57,11 @@ class LZW(Tokenizer.Tokenizer):
 	
 	def encode_batch(self, batch):
 		batch_size = batch.size(dim=0)
-        enc = []
-        for i in range(batch_size):
-            enc.append(torch.tensor(self.encode(batch[i,:])))
-        nt = torch.nested.nested_tensor(enc)
-        nt_padded = torch.nested.to_padded_tensor(nt, 0)
+		enc = []
+		for i in range(batch_size):
+			enc.append(torch.tensor(self.encode(batch[i,:])))
+		nt = torch.nested.nested_tensor(enc)
+		nt_padded = torch.nested.to_padded_tensor(nt, 0)
 
 
 	def decode(self, string):
