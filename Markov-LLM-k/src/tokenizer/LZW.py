@@ -4,7 +4,7 @@ import collections
 import math
 import Tokenizer
 import utils_tokenizer
-
+import torch
 
 class LZW(Tokenizer.Tokenizer):
 
