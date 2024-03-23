@@ -44,7 +44,7 @@ class LZW(Tokenizer.Tokenizer):
 		enc = []
 
 		assert set(string.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
-		substr = self.DS[0]
+		substr = self.DS[0].to("cuda")
 		for i in range(len(string)):
 			longer_exists = [C for C in substr.children if string[i]==C.data]
 			if longer_exists:
