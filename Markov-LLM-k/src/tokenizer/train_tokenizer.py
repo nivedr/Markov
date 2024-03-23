@@ -5,7 +5,7 @@ import math
 
 import Tokenizer
 import BPE
-# import LZW
+import LZW
 # import SplitBPE
 import sys
 sys.path.append('optim')
@@ -24,6 +24,9 @@ def train_tokenizer(tokenizer, max_dict_size, p, q, order, generator, dataset_si
         tokenizer.learn_dict()
     elif tokenizer == 'BPE':
         tokenizer = BPE.BPE(kappa=10, max_dict_size=max_dict_size)
+        tokenizer.learn_dict(dset=dataset)
+    elif tokenizer == 'LZW':
+        tokenizer = LZW.LZW(kappa=10, max_dict_size=max_dict_size)
         tokenizer.learn_dict(dset=dataset)
     else:
         raise ValueError('Tokenizer must be either Character, LZW, BPE or SplitBPE')

@@ -2,15 +2,14 @@ import numpy as np
 import itertools
 import collections
 import math
-import MarkovChain
 import Tokenizer
 import utils_tokenizer
 
 
 class LZW(Tokenizer.Tokenizer):
 
-	def __init__(self, max_dict_size, MC):
-		super().__init__(MC=MC, max_dict_size=max_dict_size)
+	def __init__(self, max_dict_size):
+		super().__init__(max_dict_size=max_dict_size)
 
 
 	def learn_dict(self, dset=None):
@@ -18,13 +17,13 @@ class LZW(Tokenizer.Tokenizer):
 		if dset is not None:
 			self._dset_tok = dset
 		else:
-			self._dset_tok = self.MC.dset
+			return print("No dictionary was learned since dataset was None")
+		self.DS = []
 
 		start = utils_tokenizer.Node(-1)
 		substr = start
 		self.DS = [start]
-		for i in range(len(self._dset_tok)):
-			
+		for i in range(len(self._dset_tok)):	
 			longer_exists = [C for C in substr.children if self._dset_tok[i]==C.data]
 			if longer_exists:
 				substr = longer_exists[0]
@@ -44,7 +43,7 @@ class LZW(Tokenizer.Tokenizer):
 	def encode(self, string):
 		enc = []
 
-		assert set(string).issubset(set(range(self.MC.A))), "String contains elements outside alphabet"
+		assert set(self._dset_tok.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
 		substr = self.DS[0]
 		for i in range(len(string)):
 			longer_exists = [C for C in substr.children if string[i]==C.data]
