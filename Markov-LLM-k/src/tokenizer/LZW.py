@@ -37,7 +37,7 @@ class LZW(Tokenizer.Tokenizer):
 		
 			self.dict_size=len(self.DS)-1
 		self.dictionary=range(self.dict_size)
-		self.DS = torch.tensor(self.DS).to("cuda")
+		self.DS.to("cuda")
 		print(f"Dictionary learnt. Size of dictionary: {self.dict_size}")
 
 
