@@ -42,7 +42,7 @@ class LZW(Tokenizer.Tokenizer):
 
 	def encode(self, string):
 		enc = []
-		print(string)
+
 		assert set(string.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
 		substr = self.DS[0]
 		for i in range(len(string)):
