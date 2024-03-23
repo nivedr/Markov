@@ -56,7 +56,7 @@ class LZW(Tokenizer.Tokenizer):
 		return enc
 	
 	def encode_batch(self, batch):
-		return [encode(string) for string in batch]
+		return [self.encode(string) for string in batch]
 
 
 	def decode(self, string):
