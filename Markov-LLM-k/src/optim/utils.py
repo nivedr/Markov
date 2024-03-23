@@ -58,7 +58,7 @@ def eval(model, tokenizer, p, q, order, sequence_length, batch_size, generator, 
     return val_acc, val_loss, val_perplexity
 
 @torch.no_grad()
-def eval_probs(model, p, q, order, sequence_length, generator, extra_args, device='cpu', ctx=nullcontext()):
+def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_args, device='cpu', ctx=nullcontext()):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
