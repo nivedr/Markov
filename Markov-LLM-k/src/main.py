@@ -148,8 +148,6 @@ def main(args):
 
     torch.save(model.state_dict(), 'model.pt')
 
-    uniform_test(model)
-
     args.device = None
     args.dtype = None
     stats['args'] = vars(args)
