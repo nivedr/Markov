@@ -37,7 +37,6 @@ class LZW(Tokenizer.Tokenizer):
 		
 			self.dict_size=len(self.DS)-1
 		self.dictionary=range(self.dict_size)
-		self.DS.to("cuda")
 		print(f"Dictionary learnt. Size of dictionary: {self.dict_size}")
 
 
@@ -45,7 +44,7 @@ class LZW(Tokenizer.Tokenizer):
 		enc = []
 
 		assert set(string.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
-		substr = self.DS[0].to("cuda")
+		substr = self.DS[0]
 		for i in range(len(string)):
 			longer_exists = [C for C in substr.children if string[i]==C.data]
 			if longer_exists:
