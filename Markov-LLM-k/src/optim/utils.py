@@ -17,7 +17,7 @@ def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device
     for k in range(order):
         data[:,k] = torch.bernoulli(alpha*torch.ones((batch_size,), device=device), generator=generator)
     for i in range(order, seq_length):
-        data[:,i] = get_next_symbols(0.25, 0.75, data[:,i-order])
+        data[:,i] = get_next_symbols(p, q, data[:,i-order])
     x = data[:,:seq_length].to(int)
     y = data[:,1:].to(int)
     #if "cuda" in torch.device(device).type:
