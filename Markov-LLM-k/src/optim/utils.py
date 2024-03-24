@@ -12,7 +12,7 @@ def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device
     elif extra_args.initial == 'uniform':
         alpha = 0.5
     else:
-        alpha = 0.5
+        alpha = 0.0
     # Generate first k bits
     for k in range(order):
         data[:,k] = torch.bernoulli(alpha*torch.ones((batch_size,), device=device), generator=generator)
