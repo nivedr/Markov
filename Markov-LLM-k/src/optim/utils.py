@@ -8,7 +8,7 @@ from copy import deepcopy
 def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device='cpu'):
     data = torch.zeros(batch_size, seq_length+1, device=device)
     if extra_args.initial == 'steady':
-        alpha = 0.0 #q / (p+q)
+        alpha = q / (p+q)
     elif extra_args.initial == 'uniform':
         alpha = 0.5
     else:
@@ -17,7 +17,7 @@ def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device
     for k in range(order):
         data[:,k] = torch.bernoulli(alpha*torch.ones((batch_size,), device=device), generator=generator)
     for i in range(order, seq_length):
-        data[:,i] = get_next_symbols(0.0, 0.0, data[:,i-order])
+        data[:,i] = get_next_symbols(0.5, 0.5, data[:,i-order])
     x = data[:,:seq_length].to(int)
     y = data[:,1:].to(int)
     #if "cuda" in torch.device(device).type:
