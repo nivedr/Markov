@@ -39,7 +39,7 @@ class LZW(Tokenizer.Tokenizer):
 		self.dictionary=range(self.dict_size)
 		print(f"Dictionary learnt. Size of dictionary: {self.dict_size}")
 
-
+	@torch.no_grad()
 	def encode(self, string):
 		enc = []
 
