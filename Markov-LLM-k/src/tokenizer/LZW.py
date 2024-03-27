@@ -24,7 +24,7 @@ class LZW(Tokenizer.Tokenizer):
 		substr = start
 		self.DS = [start]
 		for i in range(len(self._dset_tok)):	
-			longer_exists = [C for C in substr.detach().children if self._dset_tok[i]==C.data]
+			longer_exists = [C for C in substr.children if self._dset_tok[i].detch()==C.data]
 			if longer_exists:
 				substr = longer_exists[0]
 			else:
