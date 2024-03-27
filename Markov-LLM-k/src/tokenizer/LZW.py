@@ -55,6 +55,7 @@ class LZW(Tokenizer.Tokenizer):
 				substr = self.DS[0]
 		return enc
 	
+	@torch.no_grad()
 	def encode_batch(self, batch):
 		batch_size = batch.size(dim=0)
 		enc = []
