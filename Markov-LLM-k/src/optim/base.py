@@ -38,6 +38,8 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             x = tokenizer.encode_batch(x)
+
+            print(x.size())
             if microstep_idx==0:
                 fix_seq_len = x.size()[1]
             if x.size()[1] > fix_seq_len:
