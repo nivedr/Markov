@@ -23,7 +23,7 @@ class LZW(Tokenizer.Tokenizer):
 		start = utils_tokenizer.Node(-1)
 		substr = start
 		self.DS = [start]
-		for i in range(len(self._dset_tok)):	
+		for i in range(len(self._dset_tok)):		
 			longer_exists = [C for C in substr.children if self._dset_tok[i].cpu()==C.data]
 			if longer_exists:
 				substr = longer_exists[0]
@@ -46,7 +46,7 @@ class LZW(Tokenizer.Tokenizer):
 		assert set(string.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
 		substr = self.DS[0]
 		for i in range(len(string)):
-			longer_exists = [C for C in substr.children if string[i]==C.data]
+			longer_exists = [C for C in substr.children if string[i].cpu()==C.data]
 			if longer_exists:
 				substr = longer_exists[0]
 				i+=1
