@@ -38,9 +38,16 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             x = tokenizer.encode_batch(x)
+            if micro_step_idx==0:
+                fix_seq_len = x.size()[1]
+            if x.size()[1] > fix_seq_len:
+                x = x[...,fix_seq_len]
+            else:
+                x = torch.nn.functional.pad(x, (0, 0, 0, fix_seq_len-x.size()[1]))
+
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
-            print(x.size())
+            
             with type_ctx:
                 with distributed_backend.get_context_for_microstep_forward(model=model, microstep_idx=microstep_idx, gradient_accumulation_steps=acc_steps):
                     outputs = model(x, targets=y)
