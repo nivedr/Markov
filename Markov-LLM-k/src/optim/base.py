@@ -40,7 +40,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
             x = tokenizer.encode_batch(x)
 
             print(x.size())
-            if itr==0:
+            if itr==0 and microstep_idx==0:
                 fix_seq_len = x.size()[1]
             print(fix_seq_len)
             if x.size()[1] > fix_seq_len:
