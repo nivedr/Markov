@@ -39,7 +39,6 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             x = tokenizer.encode_batch(x)
 
-            print(x.size())
             if itr==0 and microstep_idx==0:
                 fix_seq_len = x.size()[1]
             print(fix_seq_len)
@@ -47,7 +46,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                 x = x[...,fix_seq_len]
             else:
                 x = torch.nn.functional.pad(x, (0, 0, 0, fix_seq_len-x.size()[1]))
-
+            print(x.size())
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
             
