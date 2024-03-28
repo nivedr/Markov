@@ -109,7 +109,7 @@ class BPE(Tokenizer.Tokenizer):
             self.dictionary = range(self.dict_size)
             if self.dict_size < self.max_dict_size and self.add_token(self._dset_tok):
                 new_tok = len(self.DS)+1
-                self._dset_tok = self.apply(self._dset_tok, new_tok)
+                self._dset_tok = self.apply(self._dset_tok.clone(), new_tok)
             else:
                 break
 
