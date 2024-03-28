@@ -111,8 +111,8 @@ class BPE(Tokenizer.Tokenizer):
 
 
     def encode(self, string):
-        self._dset_tok = string.tolist()
-        assert set(self._dset_tok.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
+        assert set(string.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
+        self._dset_tok = string
 
         for tok_i in range(len(self.DS)):
             self._dset_tok = self.apply(self._dset_tok, tok_i+2)
@@ -131,7 +131,7 @@ class BPE(Tokenizer.Tokenizer):
         batch_size = batch.size(dim=0)
         enc = []
         for i in range(batch_size):
-            enc.append(torch.tensor(self.encode(batch[i,:])))
+            enc.append(torch.tensor(self.encode(batch[i,:].tolist())))
         nt = torch.nested.nested_tensor(enc)
         nt_padded = torch.nested.to_padded_tensor(nt, 0)
 
