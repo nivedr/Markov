@@ -21,10 +21,11 @@ class BPE(Tokenizer.Tokenizer):
         t1,t2 = self.DS[tok-2]
         print(f't1 = {t1}')
         print(f't2 = {t2}')
+        mask = string[:-1]
         if t1 != t2:
             mask = (string[:-1] == t1) and (string[1:] == t2)
         else:
-            for j in range(len(string)):
+            for j in range(len(string)-1):
                 mask[j] = (string[j] == string[j+1]) and (j==0 or mask[j-1] != True)
 
         string[:-1][mask] = tok
