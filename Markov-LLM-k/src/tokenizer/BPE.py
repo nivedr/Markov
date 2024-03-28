@@ -21,7 +21,7 @@ class BPE(Tokenizer.Tokenizer):
         t1,t2 = self.DS[tok-2]
         print(f't1 = {t1}')
         print(f't2 = {t2}')
-        mask = string[:-1]
+        mask = string[:-1].clone()
         if t1 != t2:
             mask = (string[:-1] == t1) and (string[1:] == t2)
         else:
@@ -109,7 +109,7 @@ class BPE(Tokenizer.Tokenizer):
             self.dictionary = range(self.dict_size)
             if self.dict_size < self.max_dict_size and self.add_token(self._dset_tok):
                 new_tok = len(self.DS)+1
-                self._dset_tok = self.apply(self._dset_tok.clone(), new_tok)
+                self._dset_tok = self.apply(self._dset_tok, new_tok)
             else:
                 break
 
