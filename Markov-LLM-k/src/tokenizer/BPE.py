@@ -33,7 +33,7 @@ class BPE(Tokenizer.Tokenizer):
     
         mask0 = deque(mask)
         mask0.appendleft(0)
-        mask = list(mask0)
+        mask = np.array(list(mask0))
 
         return string[(mask[:-1] == False)]
 
@@ -100,7 +100,7 @@ class BPE(Tokenizer.Tokenizer):
     def learn_dict(self, dset=None):
         print("Learning dictionary using BPE...")
         if dset is not None:
-            self._dset_tok = dset.tolist()
+            self._dset_tok = np.array(dset.tolist())
         else:
             return print("No dictionary was learned since dataset was None")
         self.DS = []
@@ -138,7 +138,7 @@ class BPE(Tokenizer.Tokenizer):
         batch_size = batch.size(dim=0)
         enc = []
         for i in range(batch_size):
-            enc.append(torch.tensor(self.encode(batch[i,:].tolist())))
+            enc.append(torch.tensor(np.array(self.encode(batch[i,:].tolist()))))
         nt = torch.nested.nested_tensor(enc)
         nt_padded = torch.nested.to_padded_tensor(nt, 0)
 
