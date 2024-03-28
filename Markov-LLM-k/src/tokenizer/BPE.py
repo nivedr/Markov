@@ -103,7 +103,7 @@ class BPE(Tokenizer.Tokenizer):
             self.dictionary = range(self.dict_size)
             if self.dict_size < self.max_dict_size and self.add_token(self._dset_tok):
                 new_tok = len(self.DS)+1
-                self.apply(self._dset_tok, new_tok)
+                self._dset_tok = self.apply(self._dset_tok, new_tok)
             else:
                 break
 
@@ -115,7 +115,7 @@ class BPE(Tokenizer.Tokenizer):
         assert set(self._dset_tok.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
 
         for tok_i in range(len(self.DS)):
-            self.apply(self._dset_tok, tok_i+2)
+            self._dset_tok = self.apply(self._dset_tok, tok_i+2)
         return self._dset_tok
 
 
