@@ -114,7 +114,10 @@ class BPE(Tokenizer.Tokenizer):
 
 
     def encode(self, string):
-        self._dset_tok = string
+        if isinstance(string, np.ndarray):
+            self._dset_tok = string
+        else:
+            self._dset_tok = np.array(string)
         assert set(self._dset_tok).issubset(set(range(2))), "String contains elements outside alphabet"
 
         for tok_i in range(len(self.DS)):
