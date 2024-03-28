@@ -62,8 +62,8 @@ class BPE(Tokenizer.Tokenizer):
     def all_pairwise_counts(self, string):
         count_mat = np.zeros([self.dict_size,self.dict_size])
         repeat = False
-        
-		i=0
+        i=0
+
         while i < len(string)-1:
             t1 = string[i]
             t2 = string[i+1]
