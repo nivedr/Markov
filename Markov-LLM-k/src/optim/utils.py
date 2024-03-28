@@ -35,7 +35,7 @@ def get_next_symbols(p, q, data):
 
 
 @torch.no_grad()
-def eval(model, tokenizer, p, q, order, sequence_length, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
+def eval(model, tokenizer, p, q, order, fix_seq_len, sequence_length, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
@@ -43,8 +43,17 @@ def eval(model, tokenizer, p, q, order, sequence_length, batch_size, generator, 
     for _ in range(max_num_batches): 
         x, y = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device)
         x = tokenizer.encode_batch(x)
+
+        if x.size()[1] > fix_seq_len:
+            x = x[...,:fix_seq_len]
+            print('Loop 1')
+        else:
+            x = torch.nn.functional.pad(x, (0, fix_seq_len-x.size()[1], 0, 0))
+            print('Loop 2')
+        print(x.size())
         y = deepcopy(x[:,1:]).to("cuda")
         x = deepcopy(x[:,:-1]).to("cuda")
+
         with ctx:
             outputs = model(x, targets=y, get_logits=True)
         val_loss = outputs['loss']

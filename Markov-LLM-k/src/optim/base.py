@@ -38,12 +38,6 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             x = tokenizer.encode_batch(x)
-            print(tokenizer.encode(torch.tensor([0,0])))
-            print(tokenizer.encode(torch.tensor([0,0,0])))
-            print(tokenizer.encode(torch.tensor([0,0,0,1])))
-            print(tokenizer.encode(torch.tensor([0,0,0,1,1])))
-            print(tokenizer.encode(torch.tensor([0,0,0,1,1,0])))
-            exit()
             
             print(x.size())
             if itr==0 and microstep_idx==0:
@@ -82,7 +76,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                 model.eval()
                 train_loss = loss.detach().cpu().item()
                 current_lr = scheduler.get_last_lr()[0] if scheduler is not None else extra_args.lr
-                val_acc, val_loss, val_perplexity = eval(model, tokenizer, p, q, order, sequence_length, batch_size,
+                val_acc, val_loss, val_perplexity = eval(model, tokenizer, p, q, order, fix_seq_len, sequence_length, batch_size,
                                                         generator, extra_args, extra_args.device, max_num_batches=10, ctx=type_ctx)
                 print_string = f"{itr} [train] loss={train_loss:.3f} [val] loss={val_loss:.3f}, pp={val_perplexity:.2f}, acc={val_acc:3f}"
                 val_loss_list.append(val_loss)
