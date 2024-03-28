@@ -44,7 +44,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                 fix_seq_len = x.size()[1]
             print(fix_seq_len)
             if x.size()[1] > fix_seq_len:
-                x = x[...,fix_seq_len]
+                x = x[:,...,fix_seq_len]
                 print('Loop 1')
             else:
                 x = torch.nn.functional.pad(x, (0, fix_seq_len-x.size()[1], 0, 0))
