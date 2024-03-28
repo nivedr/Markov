@@ -33,7 +33,7 @@ class BPE(Tokenizer.Tokenizer):
     
         mask0 = deque(mask)
         mask0.appendleft(0)
-        mask = np.array(list(mask0))
+        mask = list(mask0)
 
         return string[(mask[:-1] == False)]
 
