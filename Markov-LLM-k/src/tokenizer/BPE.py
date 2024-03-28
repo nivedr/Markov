@@ -20,7 +20,6 @@ class BPE(Tokenizer.Tokenizer):
     def apply(self, string, tok):
         t1,t2 = self.DS[tok-2]
 
-        length = len(string)
         mask = (string[:-1] == t1) & (string[1:] == t2)
         string[:-1][mask] = tok
     
@@ -28,7 +27,7 @@ class BPE(Tokenizer.Tokenizer):
         mask0.appendleft(0)
         mask = list(mask0)
 
-        return string[mask[:-1]]
+        return string[(mask[:-1] == 0)]
 
 
     def unapply(self, string, tok):
