@@ -119,8 +119,8 @@ class BPE(Tokenizer.Tokenizer):
 
     def encode(self, string):
         assert set(string).issubset(set(range(2))), "String contains elements outside alphabet"
-        self._dset_tok = string
-
+        self._dset_tok = np.array(string)
+        
         for tok_i in range(len(self.DS)):
             self._dset_tok = self.apply(self._dset_tok, tok_i+2)
         return torch.tensor(self._dset_tok)
