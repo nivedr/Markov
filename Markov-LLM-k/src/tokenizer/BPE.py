@@ -111,7 +111,7 @@ class BPE(Tokenizer.Tokenizer):
 
 
     def encode(self, string):
-        assert set(string.tolist()).issubset(set(range(2))), "String contains elements outside alphabet"
+        assert set(string).issubset(set(range(2))), "String contains elements outside alphabet"
         self._dset_tok = string
 
         for tok_i in range(len(self.DS)):
