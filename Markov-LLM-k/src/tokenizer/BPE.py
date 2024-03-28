@@ -100,7 +100,7 @@ class BPE(Tokenizer.Tokenizer):
     def learn_dict(self, dset=None):
         print("Learning dictionary using BPE...")
         if dset is not None:
-            self._dset_tok = dset
+            self._dset_tok = dset.tolist()
         else:
             return print("No dictionary was learned since dataset was None")
         self.DS = []
