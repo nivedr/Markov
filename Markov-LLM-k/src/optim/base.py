@@ -46,7 +46,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
             if x.size()[1] > fix_seq_len:
                 x = x[...,fix_seq_len]
             else:
-                x = torch.nn.functional.pad(x, (0, 0, 0, fix_seq_len-x.size()[1]))
+                x = torch.nn.functional.pad(x, (0, 0, 0, fix_seq_len))
             print(x.size())
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
