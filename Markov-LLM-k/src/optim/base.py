@@ -38,12 +38,6 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             x = tokenizer.encode_batch(x)
-            print(tokenizer.encode(torch.tensor([0,0])))
-            print(tokenizer.encode(torch.tensor([0,0,0])))
-            print(tokenizer.encode(torch.tensor([0,0,0,1])))
-            print(tokenizer.encode(torch.tensor([0,0,0,1,1])))
-            print(tokenizer.encode(torch.tensor([0,0,0,1,1,0])))
-            exit()
             
             print(x.size())
             if itr==0 and microstep_idx==0:
