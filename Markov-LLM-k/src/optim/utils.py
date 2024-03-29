@@ -86,6 +86,7 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_
     probs = F.softmax(outputs['logits'], dim=-1)
 
     xb = x[0]
+    print(xb)
     probsb = probs[0, order-1:]
     idx = xb[:-order+1]
 
