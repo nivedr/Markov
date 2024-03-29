@@ -3,6 +3,7 @@ import torch
 import torch.nn.functional as F
 from contextlib import nullcontext, contextmanager, ExitStack
 from copy import deepcopy
+import pickle
 
 
 def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device='cpu'):
@@ -92,10 +93,13 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_
 
     torch.set_printoptions(profile="full")
     print(probsb)
+
     print(probsb.size())
     print(idx)
     print(idx.size())
 
+    with open('probsb.pickle', 'wb') as handle:
+        pickle.dump(probsb, handle, protocol=pickle.HIGHEST_PROTOCOL)
     exit()
         
     # vec0 = probsb[idx == 0][:,1] # estimated p
