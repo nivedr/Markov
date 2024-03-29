@@ -72,7 +72,7 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_
 
     loss_list_val, acc_list = [], []
 
-    x, y = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device)
+    x, y = get_batch(p, q, order, 10*sequence_length, 1, generator, extra_args, device=device)
     x = tokenizer.encode_batch(x)
     y = deepcopy(x[:,1:]).to("cuda")
     x = deepcopy(x[:,:-1]).to("cuda")
@@ -88,11 +88,15 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_
     xb = x[0]
     probsb = probs[0, order-1:]
     idx = xb[:-order+1]
+
+    torch.set_printoptions(profile="full")
     print(probsb)
     print(probsb.size())
     print(idx)
     print(idx.size())
+
     exit()
+        
     # vec0 = probsb[idx == 0][:,1] # estimated p
     # vec1 = probsb[idx == 1][:,0] # estimated q
     prob_vec = [vec0, vec1]
