@@ -72,7 +72,7 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_
 
     loss_list_val, acc_list = [], []
 
-    x, y = get_batch(p, q, order, 10*sequence_length, 1, generator, extra_args, device=device)
+    x, y = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device)
     x = tokenizer.encode_batch(x)
     y = deepcopy(x[:,1:]).to("cuda")
     x = deepcopy(x[:,:-1]).to("cuda")
