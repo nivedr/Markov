@@ -87,9 +87,11 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_
 
     xb = x[0]
     probsb = probs[0, order-1:]
+    print(probsb)
+    exit()
     idx = xb[:-order+1]
-    vec0 = probsb[idx == 0][:,1] # estimated p
-    vec1 = probsb[idx == 1][:,0] # estimated q
+    # vec0 = probsb[idx == 0][:,1] # estimated p
+    # vec1 = probsb[idx == 1][:,0] # estimated q
     prob_vec = [vec0, vec1]
 
     val_acc = torch.stack(acc_list).mean().item()
