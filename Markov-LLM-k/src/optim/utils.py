@@ -99,7 +99,7 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_
     print(idx.size())
 
     with open('probsb.pickle', 'wb') as handle:
-        pickle.dump(probsb, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(probsb.to("cpu"), handle, protocol=pickle.HIGHEST_PROTOCOL)
     exit()
         
     # vec0 = probsb[idx == 0][:,1] # estimated p
