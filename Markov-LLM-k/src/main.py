@@ -84,11 +84,11 @@ def main(args):
     
     char_len = args.sequence_length
     args.sequence_length = x.size()[1]
-    exit()
 
     args.vocab_size = args.max_dict_size
     model = get_model(args).to(args.device) # todo: take care of initializing the model if args.use_pretrained != 'none'
 
+    print(model)
     model = distributed_backend.transform_model(model)
     
     group_specs = distributed_backend.get_raw_model(model).get_parameter_group_specs()
