@@ -87,7 +87,7 @@ def main(args):
         tok_len.append(x.size()[1])
 
     char_len = args.sequence_length
-    args.sequence_length = np.mean(tok_len)
+    args.sequence_length = int(np.mean(tok_len))
     print(args.sequence_length)
 
     args.vocab_size = args.max_dict_size
@@ -153,7 +153,7 @@ def main(args):
 
     args.sequence_length = char_len
     print("Training transformer...")
-    stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, np.mean(tok_len), generator,
+    stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
