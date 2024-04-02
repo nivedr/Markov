@@ -79,11 +79,15 @@ def main(args):
     dataset_size=args.dataset_size
     cpu_generator = torch.Generator(device='cpu')
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
-    x, _ = get_batch(p, q, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
-    x = tokenizer_model.encode_batch(x)
     
+    tok_len = []
+    for i in range(10):
+        x, _ = get_batch(p, q, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
+        x = tokenizer_model.encode_batch(x)
+        tok_len.append(x.size()[1])
+
     char_len = args.sequence_length
-    args.sequence_length = x.size()[1]
+    args.sequence_length = np.mean(tok_len)
     print(args.sequence_length)
 
     args.vocab_size = args.max_dict_size
@@ -149,7 +153,7 @@ def main(args):
 
     args.sequence_length = char_len
     print("Training transformer...")
-    stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, x.size()[1], generator,
+    stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, np.mean(tok_len), generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
