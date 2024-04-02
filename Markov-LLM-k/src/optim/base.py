@@ -13,7 +13,7 @@ from copy import deepcopy
 import pickle
 
 
-from .utils import eval, eval_probs, get_batch, save_checkpoint
+from .utils import eval, eval_probs, get_batch, save_checkpoint, pad
 
 
 
@@ -37,19 +37,10 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
     while itr < iterations:
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
-            x = tokenizer.encode_batch(x)
+            x = pad(tokenizer.encode_batch(x), model_width)
             
             print(x.size())
-            if itr==0 and microstep_idx==0:
-                fix_seq_len = x.size()[1]
-            print(fix_seq_len)
-            if x.size()[1] > fix_seq_len:
-                x = x[...,:fix_seq_len]
-                print('Loop 1')
-            else:
-                x = torch.nn.functional.pad(x, (0, fix_seq_len-x.size()[1], 0, 0))
-                print('Loop 2')
-            print(x.size())
+            
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
             

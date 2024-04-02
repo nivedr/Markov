@@ -190,7 +190,7 @@ def save_checkpoint(distributed_backend, model, opt, scheduler, itr, ckpt_path, 
 
     torch.save(checkpoint, ckpt_path)
 
-
+@torch.no_grad()
 def pad(x, seq_len):
     if x.size()[1] > seq_len:
         return x[...,:seq_len]
