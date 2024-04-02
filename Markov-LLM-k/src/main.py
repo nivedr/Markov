@@ -25,7 +25,7 @@ import distributed
 def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
-    parser.add_argument('--tokenizer', default='Character', choices=config.registered_formats())
+    parser.add_argument('--tokenizer', default='BPE', choices=config.registered_formats())
     parser.add_argument('--max_dict_size', default=10, choices=config.registered_formats())
     parser.add_argument('--dataset_size', default=10000, choices=config.registered_formats())
 
@@ -73,6 +73,18 @@ def main(args):
     #np.random.seed(args.seed)
     
     print(f"Loading dataset '{args.dataset}'")
+
+    max_dict_size=args.max_dict_size
+    dataset_size=args.dataset_size
+    cpu_generator = torch.Generator(device='cpu')
+    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
+    x, _ = get_batch(p, q, order, sequence_length=args.sequence_length, batch_size=1, generator=cpu_generator, extra_args=extra_args, device=device_type)
+    x = tokenizer.encode_batch(x)
+            
+    print(x.size())
+    fix_seq_len = x.size()[1]
+    print(fix_seq_len)
+    exit()
 
     args.vocab_size = args.max_dict_size
     model = get_model(args).to(args.device) # todo: take care of initializing the model if args.use_pretrained != 'none'
@@ -134,10 +146,6 @@ def main(args):
     print(f"\nTraining model={args.model} \n{vars(args)}\n")
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
-    max_dict_size=args.max_dict_size
-    dataset_size=args.dataset_size
-    cpu_generator = torch.Generator(device='cpu')
-    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
     # if tokenizer == 'LZW':
     #     generator = cpu_generator
     print("Training transformer...")
