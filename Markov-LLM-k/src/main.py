@@ -80,7 +80,7 @@ def main(args):
     cpu_generator = torch.Generator(device='cpu')
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
     x, _ = get_batch(p, q, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
-    x = tokenizer.encode_batch(x)
+    x = tokenizer_model.encode_batch(x)
             
     print(x.size())
     fix_seq_len = x.size()[1]
