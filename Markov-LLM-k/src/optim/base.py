@@ -34,6 +34,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
 
     t0 = time.time()
     val_loss_list = []
+    dt_list = []
     while itr < iterations:
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(p, q, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
@@ -71,6 +72,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                                                         generator, extra_args, extra_args.device, max_num_batches=20, ctx=type_ctx)
                 print_string = f"{itr} [train] loss={train_loss:.3f} [val] loss={val_loss:.3f}, pp={val_perplexity:.2f}, acc={val_acc:3f}"
                 val_loss_list.append(val_loss)
+                dt_list.append(dt)
                 print_string += f" [time per itr] {dt*1000/eval_freq:.2f}ms"
                 if scheduler is not None:
                     print_string += f" [lr] {current_lr:.5f}"
@@ -128,6 +130,9 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
 
     with open('val-loss-dump.pickle', 'wb') as handle:
         pickle.dump(val_loss_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    
+    with open('dt-dump.pickle', 'wb') as handle:
+        pickle.dump(dt_list, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
     return stats
 
