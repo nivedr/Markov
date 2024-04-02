@@ -68,7 +68,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                 train_loss = loss.detach().cpu().item()
                 current_lr = scheduler.get_last_lr()[0] if scheduler is not None else extra_args.lr
                 val_acc, val_loss, val_perplexity = eval(model, tokenizer, p, q, order, sequence_length, model_width, batch_size,
-                                                        generator, extra_args, extra_args.device, max_num_batches=10, ctx=type_ctx)
+                                                        generator, extra_args, extra_args.device, max_num_batches=20, ctx=type_ctx)
                 print_string = f"{itr} [train] loss={train_loss:.3f} [val] loss={val_loss:.3f}, pp={val_perplexity:.2f}, acc={val_acc:3f}"
                 val_loss_list.append(val_loss)
                 print_string += f" [time per itr] {dt*1000/eval_freq:.2f}ms"
