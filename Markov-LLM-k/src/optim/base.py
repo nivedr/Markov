@@ -67,7 +67,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                 model.eval()
                 train_loss = loss.detach().cpu().item()
                 current_lr = scheduler.get_last_lr()[0] if scheduler is not None else extra_args.lr
-                val_acc, val_loss, val_perplexity = eval(model, tokenizer, p, q, order, fix_seq_len, model_width, sequence_length, batch_size,
+                val_acc, val_loss, val_perplexity = eval(model, tokenizer, p, q, order, sequence_length, model_width, batch_size,
                                                         generator, extra_args, extra_args.device, max_num_batches=10, ctx=type_ctx)
                 print_string = f"{itr} [train] loss={train_loss:.3f} [val] loss={val_loss:.3f}, pp={val_perplexity:.2f}, acc={val_acc:3f}"
                 val_loss_list.append(val_loss)
@@ -87,7 +87,7 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                     })
 
                 # if itr == iterations:
-                #     _, _, _, prob_vec = eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_args,
+                #     _, _, _, prob_vec = eval_probs(model, tokenizer, p, q, order, sequence_length, model_width, generator, extra_args,
                 #                                          extra_args.device, ctx=type_ctx)
                     # print(f'Prob vec length: {len(prob_vec[0])}')
                 #     for i in range(len(prob_vec[0])):
