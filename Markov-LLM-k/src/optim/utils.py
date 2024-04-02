@@ -36,22 +36,15 @@ def get_next_symbols(p, q, data):
 
 
 @torch.no_grad()
-def eval(model, tokenizer, p, q, order, fix_seq_len, sequence_length, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
+def eval(model, tokenizer, p, q, order, sequence_length, model_width, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
 
     for _ in range(max_num_batches): 
-        x, y = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device)
-        x = tokenizer.encode_batch(x)
-
-        if x.size()[1] > fix_seq_len:
-            x = x[...,:fix_seq_len]
-            print('Loop 1')
-        else:
-            x = torch.nn.functional.pad(x, (0, fix_seq_len-x.size()[1], 0, 0))
-            print('Loop 2')
-        print(x.size())
+        x, _ = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device)
+        x = pad(tokenizer.encode_batch(x), model_width)
+        
         y = deepcopy(x[:,1:]).to("cuda")
         x = deepcopy(x[:,:-1]).to("cuda")
 
@@ -68,13 +61,13 @@ def eval(model, tokenizer, p, q, order, fix_seq_len, sequence_length, batch_size
     return val_acc, val_loss, val_perplexity
 
 @torch.no_grad()
-def eval_probs(model, tokenizer, p, q, order, sequence_length, generator, extra_args, device='cpu', ctx=nullcontext()):
+def eval_probs(model, tokenizer, p, q, order, sequence_length, model_width, generator, extra_args, device='cpu', ctx=nullcontext()):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
 
-    x, y = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device)
-    x = tokenizer.encode_batch(x)
+    x, _ = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device)
+    x = pad(tokenizer.encode_batch(x), model_width)
     y = deepcopy(x[:,1:]).to("cuda")
     x = deepcopy(x[:,:-1]).to("cuda")
 
@@ -196,3 +189,10 @@ def save_checkpoint(distributed_backend, model, opt, scheduler, itr, ckpt_path, 
     }, **extra_args)
 
     torch.save(checkpoint, ckpt_path)
+
+
+def pad(x, seq_len):
+    if x.size()[1] > seq_len:
+        return x[...,:seq_len]
+    else:
+        return torch.nn.functional.pad(x, (0, seq_len-x.size()[1], 0, 0))
