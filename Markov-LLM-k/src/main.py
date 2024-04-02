@@ -84,6 +84,7 @@ def main(args):
     
     char_len = args.sequence_length
     args.sequence_length = x.size()[1]
+    print(args.sequence_length)
 
     args.vocab_size = args.max_dict_size
     model = get_model(args).to(args.device) # todo: take care of initializing the model if args.use_pretrained != 'none'
