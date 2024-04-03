@@ -78,7 +78,7 @@ def main(args):
     max_dict_size=args.max_dict_size
     dataset_size=args.dataset_size
     cpu_generator = torch.Generator(device='cpu')
-    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, 0.8, 0.7, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
+    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, 0.8, 0.6, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
 
     tok_len = []
     for i in range(10):
