@@ -89,7 +89,8 @@ def train_base(model, tokenizer, opt, p, q, order, scheduler, iterations, acc_st
                     })
 
                 if itr == iterations:
-                    print(model)
+                    for param in model.parameters():
+                        print(param.data)
                 #     _, _, _, prob_vec = eval_probs(model, tokenizer, p, q, order, sequence_length, model_width, generator, extra_args,
                 #                                          extra_args.device, ctx=type_ctx)
                     # print(f'Prob vec length: {len(prob_vec[0])}')
