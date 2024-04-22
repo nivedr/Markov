@@ -8,8 +8,8 @@ import pickle
 
 def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device='cpu', r=0, s=0):
     data = torch.zeros(batch_size, seq_length+1, device=device)
-    r = r.to('cpu')
-    s = s.to('cpu')
+    r = r.to('cuda')
+    s = s.to('cuda')
     if extra_args.initial == 'steady':
         alpha = q / (p+q)
     elif extra_args.initial == 'uniform':
