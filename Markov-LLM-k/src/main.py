@@ -89,11 +89,11 @@ def main(args):
     dataset_size=args.dataset_size
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args, r=args.r, s=args.s)
 
-    tok_len = []
-    for i in range(10):
-        x, _ = get_batch(p, q, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type, r=args.r, s=args.s)
-        x = tokenizer_model.encode_batch(x)
-        tok_len.append(x.size()[1])
+    # tok_len = []
+    # for i in range(10):
+    #     x, _ = get_batch(p, q, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type, r=args.r, s=args.s)
+    #     x = tokenizer_model.encode_batch(x)
+    #     tok_len.append(x.size()[1])
 
     char_len = args.sequence_length
     args.sequence_length = int(np.mean(tok_len))
