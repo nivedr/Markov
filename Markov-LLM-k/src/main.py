@@ -96,8 +96,8 @@ def main(args):
     #     tok_len.append(x.size()[1])
 
     char_len = args.sequence_length
-    args.sequence_length = int(np.mean(tok_len))
-    print(args.sequence_length)
+    # args.sequence_length = int(np.mean(tok_len))
+    # print(args.sequence_length)
 
     args.vocab_size = args.max_dict_size
     model = get_model(args).to(args.device) # todo: take care of initializing the model if args.use_pretrained != 'none'
