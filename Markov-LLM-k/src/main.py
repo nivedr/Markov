@@ -96,6 +96,7 @@ def main(args):
     #     tok_len.append(x.size()[1])
 
     char_len = args.sequence_length
+    tok_len = args.sequence_length
     # args.sequence_length = int(np.mean(tok_len))
     # print(args.sequence_length)
 
