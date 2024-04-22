@@ -6,7 +6,7 @@ from copy import deepcopy
 import pickle
 
 
-def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device='cpu'):
+def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device='cpu', r=0, s=0):
     data = torch.zeros(batch_size, seq_length+1, device=device)
     if extra_args.initial == 'steady':
         alpha = q / (p+q)
@@ -18,7 +18,7 @@ def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device
     for k in range(order):
         data[:,k] = torch.bernoulli(alpha*torch.ones((batch_size,), device=device), generator=generator)
     for i in range(order, seq_length):
-        data[:,i] = get_next_symbols(p, q, data[:,i-order])
+        data[:,i] = get_next_symbols(p, q, data[:,i-order], data[:,i-order+1], r, s)
     x = data[:,:seq_length].to(int)
     y = data[:,1:].to(int)
     #if "cuda" in torch.device(device).type:
@@ -27,22 +27,23 @@ def get_batch(p, q, order, seq_length, batch_size, generator, extra_args, device
     #    y = y.pin_memory().to(device, non_blocking=True)
     return x, y
 
-def get_next_symbols(p, q, data):
-    P = torch.Tensor([[1-p, p],[q, 1-q]]).to(data.device)
-    M = P[data.to(int)]
+def get_next_symbols(p, q, data, data_p=[], r=0, s=0):
+    idx = data.to(int) + 2*data_p.to(int)
+    P = torch.Tensor([[1-p, p],[q, 1-q], [r,1-r], [s,1-s]]).to(data.device)
+    M = P[idx]
     s = torch.multinomial(M,1).flatten()
 
     return s
 
 
 @torch.no_grad()
-def eval(model, tokenizer, p, q, order, sequence_length, model_width, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
+def eval(model, tokenizer, p, q, order, sequence_length, model_width, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext(), r=0, s=0):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
 
     for _ in range(max_num_batches): 
-        x, _ = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device)
+        x, _ = get_batch(p, q, order, sequence_length, batch_size, generator, extra_args, device=device, r=r, s=s)
         x = pad(tokenizer.encode_batch(x), model_width)
         
         y = deepcopy(x[:,1:]).to("cuda")
@@ -61,12 +62,12 @@ def eval(model, tokenizer, p, q, order, sequence_length, model_width, batch_size
     return val_acc, val_loss, val_perplexity
 
 @torch.no_grad()
-def eval_probs(model, tokenizer, p, q, order, sequence_length, model_width, generator, extra_args, device='cpu', ctx=nullcontext()):
+def eval_probs(model, tokenizer, p, q, order, sequence_length, model_width, generator, extra_args, device='cpu', ctx=nullcontext(), r=0, s=0):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
 
-    x, _ = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device)
+    x, _ = get_batch(p, q, order, sequence_length, 1, generator, extra_args, device=device, r=r, s=s)
     x = pad(tokenizer.encode_batch(x), model_width)
     y = deepcopy(x[:,1:]).to("cuda")
     x = deepcopy(x[:,:-1]).to("cuda")
@@ -106,13 +107,13 @@ def eval_probs(model, tokenizer, p, q, order, sequence_length, model_width, gene
     return val_acc, val_loss, val_perplexity, prob_vec
 
 @torch.no_grad()
-def eval_sparse(model, P, sequence_length, batch_size, device='cpu', max_num_batches=24, ctx=nullcontext(), alpha_th=None, drop_k=None):
+def eval_sparse(model, P, sequence_length, batch_size, device='cpu', max_num_batches=24, ctx=nullcontext(), alpha_th=None, drop_k=None, r=0, s=0):
     assert model.training == False
 
     ce_loss_list_val, l1_loss_list_val, acc_list, sparcity_per_layer = [], [], [], []
 
     for _ in range(max_num_batches): 
-        x, y = get_batch(P, sequence_length, batch_size, device=device)
+        x, y = get_batch(P, sequence_length, batch_size, device=device, r=r, s=s)
         with ctx:
             outputs = model(x, targets=y, alpha_th=alpha_th, drop_k=drop_k, get_logits=True, get_alphas=True)
         ce_loss_list_val.append(outputs['ce_loss'])

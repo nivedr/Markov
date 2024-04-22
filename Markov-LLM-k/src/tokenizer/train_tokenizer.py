@@ -16,9 +16,9 @@ import yaml
 from pathlib import Path
 
 # Instantiate tokenizer
-def train_tokenizer(tokenizer, max_dict_size, p, q, order, generator, dataset_size, extra_args):
+def train_tokenizer(tokenizer, max_dict_size, p, q, order, generator, dataset_size, extra_args, r=0, s=0):
     print(f'Training tokenizer: {tokenizer}')
-    dataset, _ = utils.get_batch(p, q, order, seq_length=1, batch_size=dataset_size, generator=generator, extra_args=extra_args, device='cpu')
+    dataset, _ = utils.get_batch(p, q, order, seq_length=1, batch_size=dataset_size, generator=generator, extra_args=extra_args, device='cpu', r=r, s=s)
     if tokenizer == 'Character':
         tokenizer = Tokenizer.Tokenizer()
         tokenizer.learn_dict()
