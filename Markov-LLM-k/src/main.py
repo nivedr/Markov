@@ -166,7 +166,7 @@ def main(args):
     stats = train(model, tokenizer_model, opt, p, q, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
-                  ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args, r, s)
+                  ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args, r=r, s=s)
 
     torch.save(model.state_dict(), 'model.pt')
 
