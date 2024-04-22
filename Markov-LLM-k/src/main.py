@@ -57,11 +57,12 @@ def main(args):
     tokenizer = args.tokenizer
     order = args.order
     generator = torch.Generator(device=args.device)
+    cpu_generator = torch.Generator(device='cpu')
 
-    p = torch.rand(1, generator=generator)
-    q = torch.rand(1, generator=generator)
-    r = torch.rand(1, generator=generator)
-    s = torch.rand(1, generator=generator)
+    p = torch.rand(1, generator=cpu_generator)
+    q = torch.rand(1, generator=cpu_generator)
+    r = torch.rand(1, generator=cpu_generator)
+    s = torch.rand(1, generator=cpu_generator)
     args.p=p
     args.q=q
     args.r=r
@@ -86,7 +87,6 @@ def main(args):
 
     max_dict_size=args.max_dict_size
     dataset_size=args.dataset_size
-    cpu_generator = torch.Generator(device='cpu')
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args, r=args.r, s=args.s)
 
     tok_len = []
