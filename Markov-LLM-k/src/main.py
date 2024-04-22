@@ -58,10 +58,10 @@ def main(args):
     order = args.order
     generator = torch.Generator(device=args.device)
 
-    p = torch.rand((1,), generator)
-    q = torch.rand((1,), generator)
-    r = torch.rand((1,), generator)
-    s = torch.rand((1,), generator)
+    p = torch.rand(1, generator)
+    q = torch.rand(1, generator)
+    r = torch.rand(1, generator)
+    s = torch.rand(1, generator)
     args.p=p
     args.q=q
     args.r=r
