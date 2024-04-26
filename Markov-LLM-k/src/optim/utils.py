@@ -18,7 +18,7 @@ def get_batch(P, order, seq_length, batch_size, generator, extra_args, device='c
     for k in range(order):
         data[:,k] = torch.bernoulli(alpha*torch.ones((batch_size,), device=device), generator=generator)
     for i in range(order, seq_length):
-        data[:,i] = get_next_symbols(P, data[:,i-order:i])
+        data[:,i] = get_next_symbols(P, data[:,i-order:i], device)
     x = data[:,:seq_length].to(int)
     y = data[:,1:].to(int)
     #if "cuda" in torch.device(device).type:
@@ -27,10 +27,10 @@ def get_batch(P, order, seq_length, batch_size, generator, extra_args, device='c
     #    y = y.pin_memory().to(device, non_blocking=True)
     return x, y
 
-def get_next_symbols(P, data, switching=True):
+def get_next_symbols(P, data, device='cpu'):
     order = data.size(dim=1)
     print(data.get_device())
-    bool_to_int = torch.tensor([2**i for i in range(order)])
+    bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
     print(bool_to_int.get_device())
     idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
     
