@@ -26,10 +26,10 @@ import distributed
 def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
-    parser.add_argument('--tokenizer', default='Character', choices=config.registered_formats())
-    parser.add_argument('--max_dict_size', default=2, choices=config.registered_formats())
-    parser.add_argument('--dataset_size', default=10000, choices=config.registered_formats())
-    parser.add_argument('--transition', default='switching', choices=config.registered_formats())
+    parser.add_argument('--tokenizer', default='Character', choices=['Character', 'BPE', 'LZW'])
+    parser.add_argument('--max_dict_size', default=2)
+    parser.add_argument('--dataset_size', default=10000)
+    parser.add_argument('--transition', default='switching', choices=['random', 'switching'])
     
     args, rem_args = parser.parse_known_args()
 
