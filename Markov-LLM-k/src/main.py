@@ -29,7 +29,7 @@ def get_args():
     parser.add_argument('--tokenizer', default='Character', choices=config.registered_formats())
     parser.add_argument('--max_dict_size', default=2, choices=config.registered_formats())
     parser.add_argument('--dataset_size', default=10000, choices=config.registered_formats())
-    parser.add_argument('--chain', default='switching', choices=config.registered_formats())
+    parser.add_argument('--transition', default='switching', choices=config.registered_formats())
     
     args, rem_args = parser.parse_known_args()
 
@@ -60,11 +60,11 @@ def main(args):
     generator = torch.Generator(device=args.device)
     cpu_generator = torch.Generator(device='cpu')
 
-    if args.chain == 'random':
+    if args.transition == 'random':
         P = torch.rand([2**order,1], generator=cpu_generator)
         P = torch.cat((P,1-P),dim=1)
         args.P = P
-    elif args.chain == 'switching':
+    elif args.transition == 'switching':
         p = args.p
         q = args.q
         P = torch.Tensor([[1-p, p],[q, 1-q]]) # [ P(.| ..., 0) ; P(.| ...,1) ]
