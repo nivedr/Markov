@@ -29,7 +29,8 @@ def get_args():
     parser.add_argument('--tokenizer', default='Character', choices=config.registered_formats())
     parser.add_argument('--max_dict_size', default=2, choices=config.registered_formats())
     parser.add_argument('--dataset_size', default=10000, choices=config.registered_formats())
-
+    parser.add_argument('--chain', default='switching', choices=config.registered_formats())
+    
     args, rem_args = parser.parse_known_args()
 
     return config.parse_args_with_format(format=args.config_format, base_parser=parser, args=rem_args, namespace=args)
@@ -59,14 +60,14 @@ def main(args):
     generator = torch.Generator(device=args.device)
     cpu_generator = torch.Generator(device='cpu')
 
-    p = torch.rand(1, generator=cpu_generator)
-    q = torch.rand(1, generator=cpu_generator)
-    r = torch.rand(1, generator=cpu_generator)
-    s = torch.rand(1, generator=cpu_generator)
-    args.p=p
-    args.q=q
-    args.r=r
-    args.s=s
+    if args.chain == 'switching':
+        p, q = args.P
+        P = torch.Tensor([[1-p, p],[q, 1-q]]) # [ P(.| ..., 0) ; P(.| ...,1) ]
+        P = P.repeat(2**(order-1),1)
+    elif args.chain == 'random':
+        P = torch.rand([2**order,1], generator=cpu_generator)
+        P = torch.cat((P,1-P),dim=1)
+        args.P = P
 
     torch.backends.cuda.matmul.allow_tf32 = True # allows us to make sure we're able to use tensorfloat32 during training
     torch.backends.cudnn.allow_tf32 = True
@@ -87,11 +88,11 @@ def main(args):
 
     max_dict_size=args.max_dict_size
     dataset_size=args.dataset_size
-    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, p, q, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args, r=args.r, s=args.s)
+    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, P, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
 
     # tok_len = []
     # for i in range(10):
-    #     x, _ = get_batch(p, q, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type, r=args.r, s=args.s)
+    #     x, _ = get_batch(P, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
     #     x = tokenizer_model.encode_batch(x)
     #     tok_len.append(x.size()[1])
 
