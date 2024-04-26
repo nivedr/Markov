@@ -34,7 +34,7 @@ def get_next_symbols(P, data, device='cpu'):
     print(bool_to_int.get_device())
     idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
     
-    M = P[idx]
+    M = P.to(device)[idx]
     s = torch.multinomial(M,1).flatten()
 
     return s
