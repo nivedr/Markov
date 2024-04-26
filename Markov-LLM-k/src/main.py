@@ -52,8 +52,8 @@ def main(args):
     #P = torch.zeros(args.vocab_size, args.vocab_size)
     #P[:,0] = I[:,-1]
     #P[:,1:] = I[:,:-1]
-    p = args.p # 0... -> 1
-    q = args.q # 1... -> 0
+    # p = args.p # 0... -> 1
+    # q = args.q # 1... -> 0
     tokenizer = args.tokenizer
     order = args.order
     generator = torch.Generator(device=args.device)
