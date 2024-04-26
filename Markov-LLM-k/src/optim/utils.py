@@ -28,7 +28,7 @@ def get_batch(P, order, seq_length, batch_size, generator, extra_args, device='c
     return x, y
 
 def get_next_symbols(P, data, switching=True):
-    order = data.shape(dim=1)
+    order = data.size(dim=1)
     bool_to_int = torch.tensor([2**i for i in range(order)])
     idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
     
@@ -109,13 +109,13 @@ def eval_probs(model, tokenizer, P, order, sequence_length, model_width, generat
     return val_acc, val_loss, val_perplexity, prob_vec
 
 @torch.no_grad()
-def eval_sparse(model, P, sequence_length, batch_size, device='cpu', max_num_batches=24, ctx=nullcontext(), alpha_th=None, drop_k=None, r=0, s=0):
+def eval_sparse(model, P, sequence_length, batch_size, device='cpu', max_num_batches=24, ctx=nullcontext(), alpha_th=None, drop_k=None):
     assert model.training == False
 
     ce_loss_list_val, l1_loss_list_val, acc_list, sparcity_per_layer = [], [], [], []
 
     for _ in range(max_num_batches): 
-        x, y = get_batch(P, sequence_length, batch_size, device=device, r=r, s=s)
+        x, y = get_batch(P, sequence_length, batch_size, device=device)
         with ctx:
             outputs = model(x, targets=y, alpha_th=alpha_th, drop_k=drop_k, get_logits=True, get_alphas=True)
         ce_loss_list_val.append(outputs['ce_loss'])
