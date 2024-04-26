@@ -65,7 +65,8 @@ def main(args):
         P = torch.cat((P,1-P),dim=1)
         args.P = P
     elif args.chain == 'switching':
-        p, q = args.P
+        p = args.p
+        q = args.q
         P = torch.Tensor([[1-p, p],[q, 1-q]]) # [ P(.| ..., 0) ; P(.| ...,1) ]
         P = P.repeat(2**(order-1),1)
 
