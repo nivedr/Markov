@@ -29,9 +29,7 @@ def get_batch(P, order, seq_length, batch_size, generator, extra_args, device='c
 
 def get_next_symbols(P, data, device='cpu'):
     order = data.size(dim=1)
-    print(data.get_device())
     bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
-    print(bool_to_int.get_device())
     idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
     
     M = P.to(device)[idx.to(int)]

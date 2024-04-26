@@ -40,8 +40,6 @@ def train_base(model, tokenizer, opt, P, order, scheduler, iterations, acc_steps
             x, y = get_batch(P, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             x = pad(tokenizer.encode_batch(x), model_width)
             
-            print(x.size())
-            
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
             
