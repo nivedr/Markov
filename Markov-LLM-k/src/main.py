@@ -29,7 +29,8 @@ def get_args():
     parser.add_argument('--tokenizer', default='Character', choices=['Character', 'BPE', 'LZW'])
     parser.add_argument('--max_dict_size', default=2)
     parser.add_argument('--dataset_size', default=10000)
-    parser.add_argument('--transition', default='switching', choices=['random', 'switching'])
+    parser.add_argument('--transition', default='switching', choices=['random', 'switching', 'interpolation'])
+    parser.add_argument('--interpolation', default=0.1)
     
     args, rem_args = parser.parse_known_args()
 
@@ -57,6 +58,7 @@ def main(args):
     # q = args.q # 1... -> 0
     tokenizer = args.tokenizer
     order = args.order
+    delta = args.interpolation
     generator = torch.Generator(device=args.device)
     cpu_generator = torch.Generator(device='cpu')
 
@@ -69,6 +71,20 @@ def main(args):
         q = args.q
         P = torch.Tensor([[1-p, p],[q, 1-q]]) # [ P(.| ..., 0) ; P(.| ...,1) ]
         P = P.repeat(2**(order-1),1)
+    elif args.transition == 'interpolation':
+        p = args.p
+        q = args.q
+
+        # transition 1 (switching): P
+        P = torch.Tensor([[1-p, p],[q, 1-q]]) # [ P(.| ..., 0) ; P(.| ...,1) ]
+        P = P.repeat(2**(order-1),1)
+
+        # transition 2 (random): Q
+        Q = torch.rand([2**order,1], generator=cpu_generator)
+        Q = torch.cat((Q,1-Q),dim=1)
+
+        # Real transition = (1-delta) P + delta Q
+        P = (1 - delta)*P + delta*Q
 
     torch.backends.cuda.matmul.allow_tf32 = True # allows us to make sure we're able to use tensorfloat32 during training
     torch.backends.cudnn.allow_tf32 = True
