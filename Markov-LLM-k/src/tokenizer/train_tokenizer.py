@@ -18,7 +18,8 @@ from pathlib import Path
 # Instantiate tokenizer
 def train_tokenizer(tokenizer, max_dict_size, P, order, generator, dataset_size, extra_args):
     print(f'Training tokenizer: {tokenizer}')
-    dataset, _ = utils.get_batch(P, order, seq_length=1, batch_size=dataset_size, generator=generator, extra_args=extra_args, device='cpu')
+    dataset, _ = utils.get_batch(P, order, seq_length=dataset_size, batch_size=1, generator=generator, extra_args=extra_args, device='cpu')
+    
     if tokenizer == 'Character':
         tokenizer = Tokenizer.Tokenizer()
         tokenizer.learn_dict()
