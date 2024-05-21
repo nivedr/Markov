@@ -190,6 +190,7 @@ class Block(nn.Module):
 
     def forward(self, x):
         x = x + self.attn(x)
+        #x = x + self.attn(self.lin_1(x))
         # x = x + self.mlp(self.ln_2(x))
         self.iter += 1
         return x
