@@ -27,6 +27,19 @@ def get_batch(P, order, seq_length, batch_size, generator, extra_args, device='c
     #    y = y.pin_memory().to(device, non_blocking=True)
     return x, y
 
+def CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device='cpu'):
+    bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
+    data = get_batch(P, order, seq_length, batch_size, generator, extra_args, device='cpu')
+    CE_est = 0.0
+    
+    for i in range(order, seq_length):
+        slice = data[:,i-order:i]
+        idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
+        M = P.to(device)[idx.to(int)]
+        CE_est -= torch.sum(torch.log(M[data[i]]))
+    
+    return CE_est/batch_size/(seq_length-order)
+
 def get_next_symbols(P, data, device='cpu'):
     order = data.size(dim=1)
     bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
