@@ -29,7 +29,7 @@ def get_batch(P, order, seq_length, batch_size, generator, extra_args, device='c
 
 def CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device='cpu'):
     bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
-    data = get_batch(P, order, seq_length, batch_size, generator, extra_args, device='cpu')
+    data, _ = get_batch(P, order, seq_length, batch_size, generator, extra_args, device='cpu')
     CE_est = 0.0
     print(data)
     
