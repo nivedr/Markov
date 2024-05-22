@@ -33,13 +33,13 @@ def CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device=
     CE_est = 0.0
     print(data)
     
-    for i in range(order, seq_length):
+    for i in range(order, seq_length-1):
         slice = data[:,i-order:i]
         idx = torch.sum(torch.mul(slice, bool_to_int[None,:]), dim=1)
         M = P.to(device)[idx.to(int)]
         CE_est -= torch.sum(torch.log(M[data[i]]))
     
-    return CE_est/batch_size/(seq_length-order)
+    return CE_est/batch_size/(seq_length-order-1)
 
 def get_next_symbols(P, data, device='cpu'):
     order = data.size(dim=1)
