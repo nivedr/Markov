@@ -19,7 +19,7 @@ from models.base import AddBeta
 from models.utils import get_model
 from optim.base import train_base
 from optim.sparse import train_sparse
-from optim.utils import get_batch
+from optim.utils import get_batch, CE_estimate
 import distributed
 
 
@@ -109,6 +109,8 @@ def main(args):
     dataset_size=args.dataset_size
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, P, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
 
+    est = CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device='cpu')
+    print(f"Cross entropy estimate of the Markov chain is: {est}")
     # tok_len = []
     # for i in range(10):
     #     x, _ = get_batch(P, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
