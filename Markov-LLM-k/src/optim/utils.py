@@ -35,7 +35,7 @@ def CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device=
     
     for i in range(order, seq_length):
         slice = data[:,i-order:i]
-        idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
+        idx = torch.sum(torch.mul(slice, bool_to_int[None,:]), dim=1)
         M = P.to(device)[idx.to(int)]
         CE_est -= torch.sum(torch.log(M[data[i]]))
     
