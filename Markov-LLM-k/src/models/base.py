@@ -102,7 +102,7 @@ class CausalSelfAttention(nn.Module):
             else:
                 y = torch.nn.functional.scaled_dot_product_attention(q, k, v, attn_mask=None, dropout_p=self.dropout, is_causal=True)
             
-            if self.iter == 10000:
+            if self.iter == 1000000:
                 mat = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
                 attn_bias = torch.zeros(T, T, dtype=q.dtype, device=mat.device)
                 temp_mask = torch.ones(T, T, dtype=torch.bool, device=mat.device).tril(diagonal=0)
@@ -145,7 +145,7 @@ class CausalSelfAttention(nn.Module):
 
         # output projection
         y = self.resid_dropout(self.c_proj(y))
-        if self.iter == 10000:
+        if self.iter == 1000000:
             print("att_proj:")
             print(self.c_proj.weight)
             print(self.c_proj.weight.shape)
@@ -169,7 +169,7 @@ class MLP(nn.Module):
         x = self.activation(x)
         x = self.c_proj(x)
         x = self.dropout(x)
-        if self.iter == 10000:
+        if self.iter == 1000000:
             print("c_fc:")
             print(self.c_fc.weight)
             print("c_proj:")
@@ -258,7 +258,7 @@ class GPTBase(nn.Module):
     def forward(self, idx, targets=None, get_logits=False):
         device = idx.device
         b, t = idx.size()
-        if self.iter == 10000:
+        if self.iter == 1000000:
             past = 2*idx[0,:-2] + idx[0,1:-1]
             future = idx[0,2:]
             p00 = sum(future[past==0]) / sum(past==0)
@@ -281,7 +281,7 @@ class GPTBase(nn.Module):
         # forward the GPT model itself
         tok_emb = self.transformer.wte(idx) # token embeddings of shape (b, t, n_embd)
         pos_emb = self.transformer.wpe(pos) # position embeddings of shape (1, t, n_embd)
-        if self.iter == 10000:
+        if self.iter == 1000000:
             print("wte:")
             print(self.transformer.wte.weight)
             print("wpe:")
@@ -299,7 +299,7 @@ class GPTBase(nn.Module):
         if targets is not None:
             # if we are given some desired targets also calculate the loss
             logits = self.lm_head(x) # (b, t, vocab_size)
-            if self.iter == 10000:
+            if self.iter == 1000000:
                 print("lm_head:")
                 print(self.lm_head.weight)
             if self.config.vocab_size == 2 and self.config.bce:
