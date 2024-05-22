@@ -40,7 +40,7 @@ def CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device=
         print(M)
         print()
         
-        CE_est -= torch.sum(torch.log( [M[ct,x] for ct, x in enumerate(data[:,i])] ))
+        CE_est -= torch.sum(torch.log( torch.tensor([M[ct,x] for ct, x in enumerate(data[:,i])]) ))
     
     return CE_est/batch_size/(seq_length-order-1)
 
