@@ -60,7 +60,9 @@ def main(args):
     order = args.order
     delta = args.interpolation
     generator = torch.Generator(device=args.device)
+    generator.seed()
     cpu_generator = torch.Generator(device='cpu')
+    cpu_generator.seed()
 
     if args.transition == 'random':
         P = torch.rand([2**order,1], generator=cpu_generator)
