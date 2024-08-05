@@ -59,9 +59,9 @@ def main(args):
     # q = args.q # 1... -> 0
     
     tokenizer = args.tokenizer
-    order = args.order
+    order = int(args.order)
     delta = args.interpolation
-    vocab_size = args.vocab_size
+    vocab_size = int(args.vocab_size)
     generator = torch.Generator(device=args.device)
     generator.seed()
     cpu_generator = torch.Generator(device='cpu')
