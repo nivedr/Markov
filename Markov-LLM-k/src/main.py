@@ -70,7 +70,7 @@ def main(args):
     if args.transition == 'random':
         P = torch.rand([vocab_size**order,vocab_size], generator=cpu_generator)
         sum_P = torch.sum(P, dim=1)
-        torch.div(P, sum_P)
+        P = torch.transpose(torch.div(torch.transpose(P), sum_P))
         # P = torch.cat((P,1-P),dim=1)
         args.P = P
     elif args.transition == 'switching':
