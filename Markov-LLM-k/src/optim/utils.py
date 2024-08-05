@@ -28,17 +28,14 @@ def get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_arg
     return x, y
 
 def CE_estimate(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu'):
-    bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
+    bool_to_int = torch.tensor([vocab_size**i for i in range(order)], device=device)
     data, _ = get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu')
     CE_est = 0.0
-    print(data)
     
     for i in range(order, seq_length-1):
         slice = data[:,i-order:i]
         idx = torch.sum(torch.mul(slice, bool_to_int[None,:]), dim=1)
         M = P.to(device)[idx.to(int)]
-        print(M)
-        print()
         
         CE_est -= torch.sum(torch.log( torch.tensor([M[ct,x] for ct, x in enumerate(data[:,i])]) ))
     
