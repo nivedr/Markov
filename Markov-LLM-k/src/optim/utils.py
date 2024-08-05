@@ -16,7 +16,7 @@ def get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_arg
         alpha = 1.0/vocab_size
     # Generate first k bits
     for k in range(order):
-        data[:,k] = torch.multinomial(alpha*torch.ones(vocab_size, device=device), num_samples=batch_size, generator=generator)
+        data[:,k] = torch.multinomial(alpha*torch.ones(vocab_size, device=device), num_samples=batch_size, replacement=True, generator=generator)
     for i in range(order, seq_length):
         data[:,i] = get_next_symbols(P, data[:,i-order:i], vocab_size, device)
     x = data[:,:seq_length].to(int)
