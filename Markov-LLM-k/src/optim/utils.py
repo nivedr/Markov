@@ -27,9 +27,9 @@ def get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_arg
     #    y = y.pin_memory().to(device, non_blocking=True)
     return x, y
 
-def CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device='cpu'):
+def CE_estimate(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu'):
     bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
-    data, _ = get_batch(P, order, seq_length, batch_size, generator, extra_args, device='cpu')
+    data, _ = get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu')
     CE_est = 0.0
     print(data)
     
@@ -62,7 +62,7 @@ def eval(model, tokenizer, P, order, sequence_length, model_width, batch_size, g
     loss_list_val, acc_list = [], []
 
     for _ in range(max_num_batches): 
-        x, _ = get_batch(P, order, sequence_length, batch_size, generator, extra_args, device=device)
+        x, _ = get_batch(P, order, vocab_size, sequence_length, batch_size, generator, extra_args, device=device)
         x = pad(tokenizer.encode_batch(x), model_width)
         
         y = deepcopy(x[:,1:]).to("cuda")
@@ -86,7 +86,7 @@ def eval_probs(model, tokenizer, P, order, sequence_length, model_width, generat
 
     loss_list_val, acc_list = [], []
 
-    x, _ = get_batch(P, order, sequence_length, 1, generator, extra_args, device=device)
+    x, _ = get_batch(P, order, vocab_size, sequence_length, 1, generator, extra_args, device=device)
     x = pad(tokenizer.encode_batch(x), model_width)
     y = deepcopy(x[:,1:]).to("cuda")
     x = deepcopy(x[:,:-1]).to("cuda")
@@ -132,7 +132,7 @@ def eval_sparse(model, P, sequence_length, batch_size, device='cpu', max_num_bat
     ce_loss_list_val, l1_loss_list_val, acc_list, sparcity_per_layer = [], [], [], []
 
     for _ in range(max_num_batches): 
-        x, y = get_batch(P, sequence_length, batch_size, device=device)
+        x, y = get_batch(P, order, vocab_size, sequence_length, batch_size, device=device)
         with ctx:
             outputs = model(x, targets=y, alpha_th=alpha_th, drop_k=drop_k, get_logits=True, get_alphas=True)
         ce_loss_list_val.append(outputs['ce_loss'])
@@ -159,7 +159,7 @@ def eval_sweep_dropk(model, P, sequence_length, batch_size, n_heads, device='cpu
     for frac in x_axis:
         drop_k = int(sequence_length * frac * n_heads)
         for _ in range(max_num_batches): 
-            x, y = get_batch(P, sequence_length, batch_size, device=device)
+            x, y = get_batch(P, order, vocab_size, sequence_length, batch_size, device=device)
             with ctx:
                 outputs = model(x, targets=y, alpha_th=None, drop_k=drop_k, get_logits=True)
             loss_list_val.append(outputs['ce_loss'])
@@ -182,7 +182,7 @@ def eval_sweep_alphath(model, P, sequence_length, batch_size, device='cpu', max_
     for alpha_th in alpha_ths:
         frac_heads_pruned_list = []
         for _ in range(max_num_batches): 
-            x, y = get_batch(P, sequence_length, batch_size, device=device)
+            x, y = get_batch(P, order, vocab_size, sequence_length, batch_size, device=device)
             with ctx:
                 outputs = model(x, targets=y, alpha_th=alpha_th, drop_k=None, get_logits=True)
             nph, nh = outputs['num_head_pruned_per_layer'], outputs['num_heads_per_layer']
