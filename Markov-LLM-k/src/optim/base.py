@@ -18,7 +18,7 @@ from .utils import eval, eval_probs, get_batch, save_checkpoint, pad
 
 
 
-def train_base(model, tokenizer, opt, P, order, scheduler, iterations, acc_steps, batch_size, sequence_length, model_width, generator, eval_freq, ckpt_path, distributed_backend, extra_args):
+def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iterations, acc_steps, batch_size, sequence_length, model_width, generator, eval_freq, ckpt_path, distributed_backend, extra_args):
     device_type = 'cuda' if 'cuda' in str(extra_args.device) else 'cpu'
     type_ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(
         device_type=device_type, dtype=torch.float16)  # extra_args.dtype) #changed!
@@ -37,7 +37,7 @@ def train_base(model, tokenizer, opt, P, order, scheduler, iterations, acc_steps
     dt_list = []
     while itr < iterations:
         for microstep_idx in range(acc_steps):  # gradient accumulation
-            x, y = get_batch(P, order, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
+            x, y = get_batch(P, order, vocab_size, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             x = pad(tokenizer.encode_batch(x), model_width)
             
             y = deepcopy(x[:,1:]).to("cuda")
