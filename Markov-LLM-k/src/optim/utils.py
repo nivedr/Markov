@@ -6,19 +6,19 @@ from copy import deepcopy
 import pickle
 
 
-def get_batch(P, order, seq_length, batch_size, generator, extra_args, device='cpu'):
+def get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu'):
     data = torch.zeros(batch_size, seq_length+1, device=device)
     # if extra_args.initial == 'steady':
     #     alpha = q / (p+q)
     if extra_args.initial == 'uniform':
-        alpha = 0.5
+        alpha = 1.0/vocab_size
     else:
-        alpha = 0.5
+        alpha = 1.0/vocab_size
     # Generate first k bits
     for k in range(order):
-        data[:,k] = torch.bernoulli(alpha*torch.ones((batch_size,), device=device), generator=generator)
+        data[:,k] = torch.multinomial(alpha*torch.ones(vocab_size, device=device), num_samples=batch_size, generator=generator)
     for i in range(order, seq_length):
-        data[:,i] = get_next_symbols(P, data[:,i-order:i], device)
+        data[:,i] = get_next_symbols(P, data[:,i-order:i], vocab_size, device)
     x = data[:,:seq_length].to(int)
     y = data[:,1:].to(int)
     #if "cuda" in torch.device(device).type:
@@ -44,9 +44,9 @@ def CE_estimate(P, order, seq_length, batch_size, generator, extra_args, device=
     
     return CE_est/batch_size/(seq_length-order-1)
 
-def get_next_symbols(P, data, device='cpu'):
+def get_next_symbols(P, data, vocab_size, device='cpu'):
     order = data.size(dim=1)
-    bool_to_int = torch.tensor([2**i for i in range(order)], device=device)
+    bool_to_int = torch.tensor([vocab_size**i for i in range(order)], device=device)
     idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
     
     M = P.to(device)[idx.to(int)]
