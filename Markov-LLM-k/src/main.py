@@ -91,8 +91,6 @@ def main(args):
         Q = torch.cat((Q,1-Q),dim=1)
 
         # Real transition = (1-delta) P + delta Q
-        print(P)
-        print
         P = (1 - delta)*P + delta*Q
 
     torch.backends.cuda.matmul.allow_tf32 = True # allows us to make sure we're able to use tensorfloat32 during training
