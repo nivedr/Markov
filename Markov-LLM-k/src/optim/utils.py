@@ -56,7 +56,7 @@ def get_next_symbols(P, data, vocab_size, device='cpu'):
 
 
 @torch.no_grad()
-def eval(model, tokenizer, P, order, sequence_length, model_width, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
+def eval(model, tokenizer, P, order, vocab_size, sequence_length, model_width, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
