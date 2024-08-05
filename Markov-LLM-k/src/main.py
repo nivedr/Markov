@@ -114,7 +114,7 @@ def main(args):
 
     max_dict_size=args.max_dict_size
     dataset_size=args.dataset_size
-    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, P, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
+    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, P, order, vocab_size, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
 
     est = CE_estimate(P, order, vocab_size, args.sequence_length, 10, cpu_generator, extra_args=args, device='cpu')
     print(f"Cross entropy estimate of the Markov chain is: {est}")
