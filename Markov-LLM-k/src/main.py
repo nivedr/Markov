@@ -27,6 +27,7 @@ def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
     parser.add_argument('--tokenizer', default='Character', choices=['Character', 'BPE', 'LZW'])
+    parser.add_argument('--vocab_size', default=10)
     parser.add_argument('--max_dict_size', default=10)
     parser.add_argument('--dataset_size', default=10000)
     parser.add_argument('--transition', default='switching', choices=['random', 'switching', 'interpolation'])
@@ -56,6 +57,7 @@ def main(args):
     #P[:,1:] = I[:,:-1]
     # p = args.p # 0... -> 1
     # q = args.q # 1... -> 0
+    
     tokenizer = args.tokenizer
     order = args.order
     delta = args.interpolation
@@ -65,8 +67,10 @@ def main(args):
     cpu_generator.seed()
 
     if args.transition == 'random':
-        P = torch.rand([2**order,1], generator=cpu_generator)
-        P = torch.cat((P,1-P),dim=1)
+        P = torch.rand([vocab_size**order,vocab_size], generator=cpu_generator)
+        sum_P = torch.sum(P, dim=1)
+        torch.div(P, sum_P)
+        # P = torch.cat((P,1-P),dim=1)
         args.P = P
     elif args.transition == 'switching':
         p = args.p
