@@ -61,6 +61,7 @@ def main(args):
     tokenizer = args.tokenizer
     order = args.order
     delta = args.interpolation
+    vocab_size = args.vocab_size
     generator = torch.Generator(device=args.device)
     generator.seed()
     cpu_generator = torch.Generator(device='cpu')
@@ -115,7 +116,7 @@ def main(args):
     dataset_size=args.dataset_size
     tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, P, order, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
 
-    est = CE_estimate(P, order, args.sequence_length, 10, cpu_generator, extra_args=args, device='cpu')
+    est = CE_estimate(P, order, vocab_size, args.sequence_length, 10, cpu_generator, extra_args=args, device='cpu')
     print(f"Cross entropy estimate of the Markov chain is: {est}")
     # tok_len = []
     # for i in range(10):
@@ -191,7 +192,7 @@ def main(args):
 
     args.sequence_length = char_len
     print("Training transformer...")
-    stats = train(model, tokenizer_model, opt, P, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
+    stats = train(model, tokenizer_model, opt, P, order, vocab_size, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
