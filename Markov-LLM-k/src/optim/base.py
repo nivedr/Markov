@@ -30,6 +30,7 @@ def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iteration
         print(f"Compiling model ...")
         model = torch.compile(model) # requires pytorch 2.0+
 
+    print(f"Start training ...")
     model.train()
 
     t0 = time.time()
@@ -51,6 +52,7 @@ def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iteration
             substep += 1
             print(substep)
 
+        print(f"Acc gradient ...")
         if extra_args.grad_clip != 0.0:
             torch.nn.utils.clip_grad_norm_(model.parameters(), extra_args.grad_clip)
         opt.step()
