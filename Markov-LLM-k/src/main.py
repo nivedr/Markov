@@ -125,7 +125,7 @@ def main(args):
 
     # char_len = args.sequence_length
     # # tok_len = args.sequence_length
-    args.sequence_length = int(np.mean(tok_len))
+    # args.sequence_length = int(np.mean(tok_len))
     # print(args.sequence_length)
 
     args.vocab_size = args.max_dict_size
@@ -190,7 +190,7 @@ def main(args):
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     print("Training transformer...")
-    stats = train(model, tokenizer_model, opt, P, order, alphabet_size, scheduler, args.iterations, args.acc_steps, args.batch_size, 200, int(np.mean(tok_len)), generator,
+    stats = train(model, tokenizer_model, opt, P, order, alphabet_size, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
