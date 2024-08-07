@@ -21,6 +21,7 @@ def get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_arg
         data[:,i] = get_next_symbols(P, data[:,i-order:i], vocab_size, device)
     x = data[:,:seq_length].to(int)
     y = data[:,1:].to(int)
+    print(x)
     #if "cuda" in torch.device(device).type:
     #    # pin arrays x,y, which allows us to move them to GPU asynchronously (non_blocking=True)
     #    x = x.pin_memory().to(device, non_blocking=True)
