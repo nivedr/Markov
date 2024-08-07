@@ -189,7 +189,6 @@ def main(args):
     print(f"\nTraining model={args.model} \n{vars(args)}\n")
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
-    args.sequence_length = char_len
     print("Training transformer...")
     stats = train(model, tokenizer_model, opt, P, order, vocab_size, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
