@@ -119,7 +119,7 @@ def main(args):
     
     tok_len = []
     for i in range(10):
-        x, _ = get_batch(P, order, vocab_size=args.vocab_size, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
+        x, _ = get_batch(P, order, vocab_size=vocab_size, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
         x = tokenizer_model.encode_batch(x)
         tok_len.append(x.size()[1])
 
@@ -191,7 +191,7 @@ def main(args):
 
     args.sequence_length = char_len
     print("Training transformer...")
-    stats = train(model, tokenizer_model, opt, P, order, args.vocab_size, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
+    stats = train(model, tokenizer_model, opt, P, order, vocab_size, scheduler, args.iterations, args.acc_steps, args.batch_size, char_len, args.sequence_length, generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
