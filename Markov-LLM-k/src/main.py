@@ -123,11 +123,11 @@ def main(args):
         x = tokenizer_model.encode_batch(x)
         tok_len.append(x.size()[1])
 
-    char_len = args.sequence_length
-    args.sequence_length = int(np.mean(tok_len))
-    print(args.sequence_length)
+    # char_len = args.sequence_length
+    # args.sequence_length = int(np.mean(tok_len))
+    # print(args.sequence_length)
 
-    args.vocab_size = args.max_dict_size
+    # args.vocab_size = args.max_dict_size
     
     # char_len = args.sequence_length
     # # tok_len = args.sequence_length
@@ -198,7 +198,6 @@ def main(args):
     print(f"\nTraining model={args.model} \n{vars(args)}\n")
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
-    args.sequence_length = char_len
     print("Training transformer...")
     stats = train(model, tokenizer_model, opt, P, order, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
