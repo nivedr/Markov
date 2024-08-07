@@ -18,7 +18,7 @@ from .utils import eval, eval_probs, get_batch, save_checkpoint, pad
 
 
 
-def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iterations, acc_steps, batch_size, sequence_length, model_width, generator, eval_freq, ckpt_path, distributed_backend, extra_args):
+def train_base(model, tokenizer, opt, P, order, alphabet_size, scheduler, iterations, acc_steps, batch_size, sequence_length, model_width, generator, eval_freq, ckpt_path, distributed_backend, extra_args):
     device_type = 'cuda' if 'cuda' in str(extra_args.device) else 'cpu'
     type_ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(
         device_type=device_type, dtype=torch.float16)  # extra_args.dtype) #changed!
@@ -38,7 +38,7 @@ def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iteration
     dt_list = []
     while itr < iterations:
         for microstep_idx in range(acc_steps):  # gradient accumulation
-            x, y = get_batch(P, order, vocab_size, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
+            x, y = get_batch(P, order, alphabet_size, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             print('delimiter')
 
             x = pad(tokenizer.encode_batch(x), model_width)
@@ -69,7 +69,7 @@ def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iteration
                 model.eval()
                 train_loss = loss.detach().cpu().item()
                 current_lr = scheduler.get_last_lr()[0] if scheduler is not None else extra_args.lr
-                val_acc, val_loss, val_perplexity = eval(model, tokenizer, P, order, vocab_size, sequence_length, model_width, batch_size,
+                val_acc, val_loss, val_perplexity = eval(model, tokenizer, P, order, alphabet_size, sequence_length, model_width, batch_size,
                                                         generator, extra_args, extra_args.device, max_num_batches=20, ctx=type_ctx)
                 print_string = f"{itr} [train] loss={train_loss:.3f} [val] loss={val_loss:.3f}, pp={val_perplexity:.2f}, acc={val_acc:3f}"
                 val_loss_list.append(val_loss)
