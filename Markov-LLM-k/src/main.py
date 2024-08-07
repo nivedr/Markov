@@ -72,7 +72,6 @@ def main(args):
         sum_P = torch.sum(P, dim=1)
         P = torch.transpose(torch.div(torch.transpose(P,0,1), sum_P),0,1)
         # P = torch.cat((P,1-P),dim=1)
-        args.P = P
     elif args.transition == 'switching':
         p = args.p
         q = args.q
@@ -92,6 +91,7 @@ def main(args):
 
         # Real transition = (1-delta) P + delta Q
         P = (1 - delta)*P + delta*Q
+    args.P = P
 
     torch.backends.cuda.matmul.allow_tf32 = True # allows us to make sure we're able to use tensorfloat32 during training
     torch.backends.cudnn.allow_tf32 = True
