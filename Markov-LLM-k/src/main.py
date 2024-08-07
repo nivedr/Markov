@@ -27,7 +27,7 @@ def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
     parser.add_argument('--tokenizer', default='LZW', choices=['Character', 'BPE', 'LZW'])
-    parser.add_argument('--vocab_size', default=2)
+    parser.add_argument('--alphabet_size', default=2)
     parser.add_argument('--max_dict_size', default=10)
     parser.add_argument('--dataset_size', default=10000)
     parser.add_argument('--transition', default='switching', choices=['random', 'switching', 'interpolation'])
@@ -61,14 +61,14 @@ def main(args):
     tokenizer = args.tokenizer
     order = int(args.order)
     delta = args.interpolation
-    vocab_size = int(args.vocab_size)
+    alphabet_size = int(args.alphabet_size)
     generator = torch.Generator(device=args.device)
     generator.seed()
     cpu_generator = torch.Generator(device='cpu')
     cpu_generator.seed()
 
     if args.transition == 'random':
-        P = torch.rand([vocab_size**order,vocab_size], generator=cpu_generator)
+        P = torch.rand([alphabet_size**order,alphabet_size], generator=cpu_generator)
         sum_P = torch.sum(P, dim=1)
         P = torch.transpose(torch.div(torch.transpose(P,0,1), sum_P),0,1)
         # P = torch.cat((P,1-P),dim=1)
@@ -112,14 +112,14 @@ def main(args):
 
     max_dict_size=args.max_dict_size
     dataset_size=args.dataset_size
-    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, P, order, vocab_size, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
+    tokenizer_model = train_tokenizer.train_tokenizer(tokenizer, max_dict_size, P, order, alphabet_size, generator=cpu_generator, dataset_size=dataset_size, extra_args=args)
 
-    est = CE_estimate(P, order, vocab_size, args.sequence_length, 50, cpu_generator, extra_args=args, device='cpu')
+    est = CE_estimate(P, order, alphabet_size, args.sequence_length, 50, cpu_generator, extra_args=args, device='cpu')
     print(f"Cross entropy estimate of the Markov chain is: {est}")
     
     tok_len = []
     for i in range(10):
-        x, _ = get_batch(P, order, vocab_size=vocab_size, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
+        x, _ = get_batch(P, order, alphabet_size=alphabet_size, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
         x = tokenizer_model.encode_batch(x)
         tok_len.append(x.size()[1])
 
@@ -190,7 +190,7 @@ def main(args):
     print(sum(p.numel() for p in model.parameters() if p.requires_grad))
 
     print("Training transformer...")
-    stats = train(model, tokenizer_model, opt, P, order, vocab_size, scheduler, args.iterations, args.acc_steps, args.batch_size, 200, int(np.mean(tok_len)), generator,
+    stats = train(model, tokenizer_model, opt, P, order, alphabet_size, scheduler, args.iterations, args.acc_steps, args.batch_size, 200, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
