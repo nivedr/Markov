@@ -26,7 +26,7 @@ import distributed
 def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
-    parser.add_argument('--tokenizer', default='Character', choices=['Character', 'BPE', 'LZW'])
+    parser.add_argument('--tokenizer', default='LZW', choices=['Character', 'BPE', 'LZW'])
     parser.add_argument('--vocab_size', default=2)
     parser.add_argument('--max_dict_size', default=10)
     parser.add_argument('--dataset_size', default=10000)
