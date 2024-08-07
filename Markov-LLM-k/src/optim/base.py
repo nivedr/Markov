@@ -43,7 +43,8 @@ def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iteration
             
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
-            
+
+            print(f"Acc gradient ...")
             with type_ctx:
                 with distributed_backend.get_context_for_microstep_forward(model=model, microstep_idx=microstep_idx, gradient_accumulation_steps=acc_steps):
                     outputs = model(x, targets=y)
@@ -52,7 +53,6 @@ def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iteration
             substep += 1
             print(substep)
 
-        print(f"Acc gradient ...")
         if extra_args.grad_clip != 0.0:
             torch.nn.utils.clip_grad_norm_(model.parameters(), extra_args.grad_clip)
         opt.step()
