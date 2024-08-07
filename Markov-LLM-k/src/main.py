@@ -128,6 +128,9 @@ def main(args):
     # args.sequence_length = int(np.mean(tok_len))
     # print(args.sequence_length)
 
+    print(f"Transformer width is: {int(np.mean(tok_len))}")
+    print(f"Seq_l to width Ratio is: {int(np.mean(tok_len))/args.sequence_length}")
+
     args.vocab_size = args.max_dict_size
     model = get_model(args).to(args.device) # todo: take care of initializing the model if args.use_pretrained != 'none'
 
