@@ -40,9 +40,9 @@ def train_base(model, tokenizer, opt, P, order, vocab_size, scheduler, iteration
         for microstep_idx in range(acc_steps):  # gradient accumulation
             x, y = get_batch(P, order, vocab_size, sequence_length, batch_size=batch_size, generator=generator, extra_args=extra_args, device=device_type)
             print('delimiter')
-            print(x)
+
             x = pad(tokenizer.encode_batch(x), model_width)
-            print(x)
+
             y = deepcopy(x[:,1:]).to("cuda")
             x = deepcopy(x[:,:-1]).to("cuda")
 
