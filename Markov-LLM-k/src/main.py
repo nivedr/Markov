@@ -116,16 +116,17 @@ def main(args):
 
     est = CE_estimate(P, order, vocab_size, args.sequence_length, 50, cpu_generator, extra_args=args, device='cpu')
     print(f"Cross entropy estimate of the Markov chain is: {est}")
-    # tok_len = []
-    # for i in range(10):
-    #     x, _ = get_batch(P, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
-    #     x = tokenizer_model.encode_batch(x)
-    #     tok_len.append(x.size()[1])
+    
+    tok_len = []
+    for i in range(10):
+        x, _ = get_batch(P, order, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
+        x = tokenizer_model.encode_batch(x)
+        tok_len.append(x.size()[1])
 
     char_len = args.sequence_length
-    tok_len = args.sequence_length
-    # args.sequence_length = int(np.mean(tok_len))
-    # print(args.sequence_length)
+    # tok_len = args.sequence_length
+    args.sequence_length = int(np.mean(tok_len))
+    print(args.sequence_length)
 
     args.vocab_size = args.max_dict_size
     model = get_model(args).to(args.device) # todo: take care of initializing the model if args.use_pretrained != 'none'
