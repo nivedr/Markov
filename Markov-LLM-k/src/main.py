@@ -26,7 +26,7 @@ import distributed
 def get_args():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument('--config_format', default='markov', choices=config.registered_formats())
-    parser.add_argument('--tokenizer', default='Character', choices=['Character', 'BPE', 'LZW'])
+    parser.add_argument('--tokenizer', default='LZW', choices=['Character', 'BPE', 'LZW'])
     parser.add_argument('--vocab_size', default=2)
     parser.add_argument('--max_dict_size', default=10)
     parser.add_argument('--dataset_size', default=10000)
@@ -123,10 +123,10 @@ def main(args):
         x = tokenizer_model.encode_batch(x)
         tok_len.append(x.size()[1])
 
-    char_len = args.sequence_length
-    # tok_len = args.sequence_length
-    args.sequence_length = int(np.mean(tok_len))
-    print(args.sequence_length)
+    # char_len = args.sequence_length
+    # # tok_len = args.sequence_length
+    # args.sequence_length = int(np.mean(tok_len))
+    # print(args.sequence_length)
 
     args.vocab_size = args.max_dict_size
     model = get_model(args).to(args.device) # todo: take care of initializing the model if args.use_pretrained != 'none'
@@ -191,7 +191,7 @@ def main(args):
 
     args.sequence_length = char_len
     print("Training transformer...")
-    stats = train(model, tokenizer_model, opt, P, order, vocab_size, scheduler, args.iterations, args.acc_steps, args.batch_size, char_len, args.sequence_length, generator,
+    stats = train(model, tokenizer_model, opt, P, order, vocab_size, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
                   eval_freq=args.eval_freq, 
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
