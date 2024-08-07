@@ -6,19 +6,19 @@ from copy import deepcopy
 import pickle
 
 
-def get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu'):
+def get_batch(P, order, alphabet_size, seq_length, batch_size, generator, extra_args, device='cpu'):
     data = torch.zeros(batch_size, seq_length+1, device=device)
     # if extra_args.initial == 'steady':
     #     alpha = q / (p+q)
     if extra_args.initial == 'uniform':
-        alpha = 1.0/vocab_size
+        alpha = 1.0/alphabet_size
     else:
-        alpha = 1.0/vocab_size
+        alpha = 1.0/alphabet_size
     # Generate first k bits
     for k in range(order):
-        data[:,k] = torch.multinomial(alpha*torch.ones(vocab_size, device=device), num_samples=batch_size, replacement=True, generator=generator)
+        data[:,k] = torch.multinomial(alpha*torch.ones(alphabet_size, device=device), num_samples=batch_size, replacement=True, generator=generator)
     for i in range(order, seq_length):
-        data[:,i] = get_next_symbols(P, data[:,i-order:i], vocab_size, device)
+        data[:,i] = get_next_symbols(P, data[:,i-order:i], alphabet_size, device)
     x = data[:,:seq_length].to(int)
     y = data[:,1:].to(int)
     #if "cuda" in torch.device(device).type:
@@ -27,9 +27,9 @@ def get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_arg
     #    y = y.pin_memory().to(device, non_blocking=True)
     return x, y
 
-def CE_estimate(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu'):
-    bool_to_int = torch.tensor([vocab_size**i for i in range(order)], device=device)
-    data, _ = get_batch(P, order, vocab_size, seq_length, batch_size, generator, extra_args, device='cpu')
+def CE_estimate(P, order, alphabet_size, seq_length, batch_size, generator, extra_args, device='cpu'):
+    bool_to_int = torch.tensor([alphabet_size**i for i in range(order)], device=device)
+    data, _ = get_batch(P, order, alphabet_size, seq_length, batch_size, generator, extra_args, device='cpu')
     CE_est = 0.0
     
     for i in range(order, seq_length-1):
@@ -41,9 +41,9 @@ def CE_estimate(P, order, vocab_size, seq_length, batch_size, generator, extra_a
     
     return CE_est/batch_size/(seq_length-order-1)
 
-def get_next_symbols(P, data, vocab_size, device='cpu'):
+def get_next_symbols(P, data, alphabet_size, device='cpu'):
     order = data.size(dim=1)
-    bool_to_int = torch.tensor([vocab_size**i for i in range(order)], device=device)
+    bool_to_int = torch.tensor([alphabet_size**i for i in range(order)], device=device)
     idx = torch.sum(torch.mul(data, bool_to_int[None,:]), dim=1)
     
     M = P.to(device)[idx.to(int)]
@@ -53,13 +53,13 @@ def get_next_symbols(P, data, vocab_size, device='cpu'):
 
 
 @torch.no_grad()
-def eval(model, tokenizer, P, order, vocab_size, sequence_length, model_width, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
+def eval(model, tokenizer, P, order, alphabet_size, sequence_length, model_width, batch_size, generator, extra_args, device='cpu', max_num_batches=24, ctx=nullcontext()):
     assert model.training == False
 
     loss_list_val, acc_list = [], []
 
     for _ in range(max_num_batches): 
-        x, _ = get_batch(P, order, vocab_size, sequence_length, batch_size, generator, extra_args, device=device)
+        x, _ = get_batch(P, order, alphabet_size, sequence_length, batch_size, generator, extra_args, device=device)
         x = pad(tokenizer.encode_batch(x), model_width)
         
         y = deepcopy(x[:,1:]).to("cuda")
@@ -83,7 +83,7 @@ def eval_probs(model, tokenizer, P, order, sequence_length, model_width, generat
 
     loss_list_val, acc_list = [], []
 
-    x, _ = get_batch(P, order, vocab_size, sequence_length, 1, generator, extra_args, device=device)
+    x, _ = get_batch(P, order, alphabet_size, sequence_length, 1, generator, extra_args, device=device)
     x = pad(tokenizer.encode_batch(x), model_width)
     y = deepcopy(x[:,1:]).to("cuda")
     x = deepcopy(x[:,:-1]).to("cuda")
@@ -129,7 +129,7 @@ def eval_sparse(model, P, sequence_length, batch_size, device='cpu', max_num_bat
     ce_loss_list_val, l1_loss_list_val, acc_list, sparcity_per_layer = [], [], [], []
 
     for _ in range(max_num_batches): 
-        x, y = get_batch(P, order, vocab_size, sequence_length, batch_size, device=device)
+        x, y = get_batch(P, order, alphabet_size, sequence_length, batch_size, device=device)
         with ctx:
             outputs = model(x, targets=y, alpha_th=alpha_th, drop_k=drop_k, get_logits=True, get_alphas=True)
         ce_loss_list_val.append(outputs['ce_loss'])
@@ -156,7 +156,7 @@ def eval_sweep_dropk(model, P, sequence_length, batch_size, n_heads, device='cpu
     for frac in x_axis:
         drop_k = int(sequence_length * frac * n_heads)
         for _ in range(max_num_batches): 
-            x, y = get_batch(P, order, vocab_size, sequence_length, batch_size, device=device)
+            x, y = get_batch(P, order, alphabet_size, sequence_length, batch_size, device=device)
             with ctx:
                 outputs = model(x, targets=y, alpha_th=None, drop_k=drop_k, get_logits=True)
             loss_list_val.append(outputs['ce_loss'])
@@ -179,7 +179,7 @@ def eval_sweep_alphath(model, P, sequence_length, batch_size, device='cpu', max_
     for alpha_th in alpha_ths:
         frac_heads_pruned_list = []
         for _ in range(max_num_batches): 
-            x, y = get_batch(P, order, vocab_size, sequence_length, batch_size, device=device)
+            x, y = get_batch(P, order, alphabet_size, sequence_length, batch_size, device=device)
             with ctx:
                 outputs = model(x, targets=y, alpha_th=alpha_th, drop_k=None, get_logits=True)
             nph, nh = outputs['num_head_pruned_per_layer'], outputs['num_heads_per_layer']
