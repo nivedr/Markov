@@ -1,0 +1,38 @@
+2025-04-07 15:25:10,470 INFO    MainThread:2054504 [wandb_setup.py:_flush():67] Current SDK version is 0.19.9
+2025-04-07 15:25:10,470 INFO    MainThread:2054504 [wandb_setup.py:_flush():67] Configure stats pid to 2054504
+2025-04-07 15:25:10,470 INFO    MainThread:2054504 [wandb_setup.py:_flush():67] Loading settings from /home/nived/.config/wandb/settings
+2025-04-07 15:25:10,470 INFO    MainThread:2054504 [wandb_setup.py:_flush():67] Loading settings from /home/nived/projects/Markov/Markov-LLM-k/src/wandb/settings
+2025-04-07 15:25:10,470 INFO    MainThread:2054504 [wandb_setup.py:_flush():67] Loading settings from environment variables
+2025-04-07 15:25:10,470 INFO    MainThread:2054504 [wandb_init.py:setup_run_log_directory():662] Logging user logs to /home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_152510-p9psq5ed/logs/debug.log
+2025-04-07 15:25:10,471 INFO    MainThread:2054504 [wandb_init.py:setup_run_log_directory():663] Logging internal logs to /home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_152510-p9psq5ed/logs/debug-internal.log
+2025-04-07 15:25:10,471 INFO    MainThread:2054504 [wandb_init.py:init():781] calling init triggers
+2025-04-07 15:25:10,473 INFO    MainThread:2054504 [wandb_init.py:init():786] wandb.init called with sweep_config: {}
+config: {'config_format': 'markov', 'tokenizer': 'BPE', 'alphabet_size': 2, 'max_dict_size': 2, 'dataset_size': 10000, 'transition': 'random', 'interpolation': 0.1, 'batch_size': 8, 'acc_steps': 1, 'seed': 0, 'iterations': 3000, 'lr': 0.002, 'warmup_percent': 0.02, 'weight_decay': 0.001, 'beta1': 0.9, 'beta2': 0.95, 'scheduler': 'cos', 'opt': 'adamw', 'eval_freq': 1, 'results_base_folder': './exps', 'grad_clip': 0.0, 'dataset': 'markov', 'data_in_ram': True, 'model': 'base', 'use_pretrained': 'none', 'dropout': 0, 'n_head': 3, 'n_layer': 2, 'n_embd': 30, 'sequence_length': 200, 'dtype': torch.float16, 'bias': False, 'no_compile': False, 'wandb': True, 'wandb_project': 'nivedr-ucb/Markov-val-k-vs-iter', 'wandb_run_prefix': 'none', 'eval_seq_prefix': '0', 'distributed_backend': None, 'p': 0.8, 'q': 0.8, 'order': 4, 'memory': -1, 'estimate_p': False, 'bce': False, 'initial': 'steady', 'no_tying': False, 'P': tensor([[0.7859, 0.2141],
+        [0.3573, 0.6427],
+        [0.1032, 0.8968],
+        [0.6238, 0.3762],
+        [0.5397, 0.4603],
+        [0.8059, 0.1941],
+        [0.9251, 0.0749],
+        [0.6388, 0.3612],
+        [0.7268, 0.2732],
+        [0.6345, 0.3655],
+        [0.4583, 0.5417],
+        [0.7413, 0.2587],
+        [0.2715, 0.7285],
+        [0.3605, 0.6395],
+        [0.8223, 0.1777],
+        [0.2381, 0.7619]]), 'vocab_size': 2, 'world_size': 1, '_wandb': {}}
+2025-04-07 15:25:10,474 INFO    MainThread:2054504 [wandb_init.py:init():809] starting backend
+2025-04-07 15:25:10,474 INFO    MainThread:2054504 [wandb_init.py:init():813] sending inform_init request
+2025-04-07 15:25:10,481 INFO    MainThread:2054504 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-04-07 15:25:10,482 INFO    MainThread:2054504 [wandb_init.py:init():823] backend started and connected
+2025-04-07 15:25:10,486 INFO    MainThread:2054504 [wandb_init.py:init():915] updated telemetry
+2025-04-07 15:25:10,495 INFO    MainThread:2054504 [wandb_init.py:init():939] communicating run to backend with 90.0 second timeout
+2025-04-07 15:25:10,931 INFO    MainThread:2054504 [wandb_init.py:init():1014] starting run threads in backend
+2025-04-07 15:25:11,005 INFO    MainThread:2054504 [wandb_run.py:_console_start():2454] atexit reg
+2025-04-07 15:25:11,005 INFO    MainThread:2054504 [wandb_run.py:_redirect():2306] redirect: wrap_raw
+2025-04-07 15:25:11,005 INFO    MainThread:2054504 [wandb_run.py:_redirect():2371] Wrapping output streams.
+2025-04-07 15:25:11,005 INFO    MainThread:2054504 [wandb_run.py:_redirect():2394] Redirects installed.
+2025-04-07 15:25:11,007 INFO    MainThread:2054504 [wandb_init.py:init():1056] run started, returning control to user process
+2025-04-07 15:33:00,099 INFO    MsgRouterThr:2054504 [mailbox.py:close():129] [no run ID] Closing mailbox, abandoning 1 handles.

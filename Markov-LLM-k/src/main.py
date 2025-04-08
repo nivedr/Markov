@@ -14,6 +14,7 @@ import train_tokenizer
 import Tokenizer
 import BPE
 
+import pickle
 import config
 from models.base import AddBeta
 from models.utils import get_model
@@ -32,7 +33,7 @@ def get_args():
     parser.add_argument('--dataset_size', type=int, default=10000)
     parser.add_argument('--transition', default='switching', choices=['random', 'switching', 'interpolation'])
     parser.add_argument('--interpolation', default=0.1)
-    
+
     args, rem_args = parser.parse_known_args()
 
     return config.parse_args_with_format(format=args.config_format, base_parser=parser, args=rem_args, namespace=args)
@@ -49,7 +50,7 @@ def get_exp_name(args):
     return exp_name
 
 
-def main(args): 
+def main(args):
     # Markov transition probabilities
     #I = torch.eye(args.vocab_size)
     #P = torch.zeros(args.vocab_size, args.vocab_size)
@@ -57,7 +58,7 @@ def main(args):
     #P[:,1:] = I[:,:-1]
     # p = args.p # 0... -> 1
     # q = args.q # 1... -> 0
-    
+
     tokenizer = args.tokenizer
     order = int(args.order)
     delta = args.interpolation
@@ -87,7 +88,8 @@ def main(args):
 
         # transition 2 (random): Q
         Q = torch.rand([2**order,1], generator=cpu_generator)
-        Q = torch.cat((Q,1-Q),dim=1)
+        Q = torch.cat((Q,1-Q),
+dim=1)
 
         # Real transition = (1-delta) P + delta Q
         P = (1 - delta)*P + delta*Q
@@ -107,8 +109,7 @@ def main(args):
     #torch.manual_seed(args.seed)
     #random.seed(args.seed)
     #np.random.seed(args.seed)
-    
-    print(f"Loading dataset '{args.dataset}'")
+    #print(f"Loading dataset '{args.dataset}'")
 
     max_dict_size=args.max_dict_size
     dataset_size=args.dataset_size
@@ -116,7 +117,7 @@ def main(args):
 
     est = CE_estimate(P, order, alphabet_size, args.sequence_length, 50, cpu_generator, extra_args=args, device='cpu')
     print(f"Cross entropy estimate of the Markov chain is: {est}")
-    
+
     tok_len = []
     for i in range(10):
         x, _ = get_batch(P, order, alphabet_size=alphabet_size, seq_length=args.sequence_length, batch_size=1, generator=generator, extra_args=args, device=device_type)
@@ -128,7 +129,7 @@ def main(args):
     # print(args.sequence_length)
 
     # args.vocab_size = args.max_dict_size
-    
+
     # char_len = args.sequence_length
     # # tok_len = args.sequence_length
     # args.sequence_length = int(np.mean(tok_len))
@@ -142,7 +143,7 @@ def main(args):
 
     print(model)
     model = distributed_backend.transform_model(model)
-    
+
     group_specs = distributed_backend.get_raw_model(model).get_parameter_group_specs()
     param_name_mapping = {p_name: p for p_name, p in model.named_parameters()}
     optimized_params_cnt = 0
@@ -162,11 +163,11 @@ def main(args):
                                 weight_decay=args.weight_decay, **extra_args)
     else:
         opt = torch.optim.SGD(group_specs, lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
-    
+
     if args.scheduler != 'none':
         if args.scheduler in ['cos', 'linear']:
-            scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer=opt, max_lr=args.lr, total_steps=args.iterations, 
-                                                            pct_start=args.warmup_percent, anneal_strategy=args.scheduler, 
+            scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer=opt, max_lr=args.lr, total_steps=args.iterations,
+                                                            pct_start=args.warmup_percent, anneal_strategy=args.scheduler,
                                                             cycle_momentum=False, div_factor=1e2, final_div_factor=.05)
         else:
             raise NotImplementedError(f"Unknown scheduler type: {args.scheduler}.")
@@ -178,8 +179,9 @@ def main(args):
     if distributed_backend.is_master_process() and args.wandb:
         params_copy = copy.deepcopy(vars(args))
         del params_copy['device']
-        wandb.init(project=args.wandb_project, name=exp_name, config=params_copy)
-    
+        wandb.init(entity="nivedr-ucb", project="Markov-val-k-vs-iter", config=params_copy)
+        wandb.log({"cross-entropy estimate": est})
+
     ckpt_path = os.path.join(args.results_base_folder, args.dataset, args.model, exp_name)
     if not os.path.exists(ckpt_path):
         if distributed_backend.is_master_process():
@@ -200,7 +202,7 @@ def main(args):
 
     print("Training transformer...")
     stats = train(model, tokenizer_model, opt, P, order, alphabet_size, scheduler, args.iterations, args.acc_steps, args.batch_size, args.sequence_length, int(np.mean(tok_len)), generator,
-                  eval_freq=args.eval_freq, 
+                  eval_freq=args.eval_freq,
                   distributed_backend=distributed_backend,
                   ckpt_path=f"{ckpt_path}/ckpt.pt", extra_args=args)
 
@@ -209,11 +211,11 @@ def main(args):
     args.device = None
     args.dtype = None
     stats['args'] = vars(args)
-    if distributed_backend.is_master_process():
-        with open(f"{ckpt_path}/summary.json", "w") as fs:
-            json.dump(stats, fs)
-    distributed_backend.finalize()
 
+
+#        with open(f"{ckpt_path}/summary.json", "w") as fs:
+#            json.dump(stats, fs)
+#    distributed_backend.finalize()
 
 if __name__ == "__main__":
     args = get_args()

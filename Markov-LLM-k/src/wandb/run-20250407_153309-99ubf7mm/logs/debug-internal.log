@@ -1,0 +1,15 @@
+{"time":"2025-04-07T15:33:09.071442862-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_153309-99ubf7mm/logs/debug-core.log"}
+{"time":"2025-04-07T15:33:09.388403267-07:00","level":"INFO","msg":"created new stream","id":"99ubf7mm"}
+{"time":"2025-04-07T15:33:09.388483393-07:00","level":"INFO","msg":"stream: started","id":"99ubf7mm"}
+{"time":"2025-04-07T15:33:09.388621219-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"99ubf7mm"}
+{"time":"2025-04-07T15:33:09.388754548-07:00","level":"INFO","msg":"handler: started","stream_id":"99ubf7mm"}
+{"time":"2025-04-07T15:33:09.388854237-07:00","level":"INFO","msg":"sender: started","stream_id":"99ubf7mm"}
+{"time":"2025-04-07T15:33:09.51186648-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-07T15:41:09.595049342-07:00","level":"INFO","msg":"stream: closing","id":"99ubf7mm"}
+{"time":"2025-04-07T15:41:09.595091802-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-07T15:41:09.595145543-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-07T15:41:10.137087035-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-07T15:41:10.245254581-07:00","level":"INFO","msg":"handler: closed","stream_id":"99ubf7mm"}
+{"time":"2025-04-07T15:41:10.245351664-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"99ubf7mm"}
+{"time":"2025-04-07T15:41:10.245374812-07:00","level":"INFO","msg":"sender: closed","stream_id":"99ubf7mm"}
+{"time":"2025-04-07T15:41:10.245477733-07:00","level":"INFO","msg":"stream: closed","id":"99ubf7mm"}

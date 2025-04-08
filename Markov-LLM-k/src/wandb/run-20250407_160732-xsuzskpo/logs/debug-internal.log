@@ -1,0 +1,15 @@
+{"time":"2025-04-07T16:07:32.874942392-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_160732-xsuzskpo/logs/debug-core.log"}
+{"time":"2025-04-07T16:07:33.194908856-07:00","level":"INFO","msg":"created new stream","id":"xsuzskpo"}
+{"time":"2025-04-07T16:07:33.19503021-07:00","level":"INFO","msg":"stream: started","id":"xsuzskpo"}
+{"time":"2025-04-07T16:07:33.195186445-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"xsuzskpo"}
+{"time":"2025-04-07T16:07:33.195233685-07:00","level":"INFO","msg":"handler: started","stream_id":"xsuzskpo"}
+{"time":"2025-04-07T16:07:33.195330439-07:00","level":"INFO","msg":"sender: started","stream_id":"xsuzskpo"}
+{"time":"2025-04-07T16:07:33.366749472-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-07T16:16:23.448724997-07:00","level":"INFO","msg":"stream: closing","id":"xsuzskpo"}
+{"time":"2025-04-07T16:16:23.448749626-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-07T16:16:23.448812595-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-07T16:16:23.860237632-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-07T16:16:23.969450192-07:00","level":"INFO","msg":"handler: closed","stream_id":"xsuzskpo"}
+{"time":"2025-04-07T16:16:23.969497288-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"xsuzskpo"}
+{"time":"2025-04-07T16:16:23.969546037-07:00","level":"INFO","msg":"sender: closed","stream_id":"xsuzskpo"}
+{"time":"2025-04-07T16:16:23.969606277-07:00","level":"INFO","msg":"stream: closed","id":"xsuzskpo"}

@@ -1,0 +1,15 @@
+{"time":"2025-04-07T15:58:26.409013948-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_155826-gtybasze/logs/debug-core.log"}
+{"time":"2025-04-07T15:58:26.731392269-07:00","level":"INFO","msg":"created new stream","id":"gtybasze"}
+{"time":"2025-04-07T15:58:26.731497648-07:00","level":"INFO","msg":"stream: started","id":"gtybasze"}
+{"time":"2025-04-07T15:58:26.731639605-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"gtybasze"}
+{"time":"2025-04-07T15:58:26.731774932-07:00","level":"INFO","msg":"handler: started","stream_id":"gtybasze"}
+{"time":"2025-04-07T15:58:26.731866396-07:00","level":"INFO","msg":"sender: started","stream_id":"gtybasze"}
+{"time":"2025-04-07T15:58:26.903882849-07:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-04-07T16:07:22.999863008-07:00","level":"INFO","msg":"stream: closing","id":"gtybasze"}
+{"time":"2025-04-07T16:07:22.999906131-07:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-04-07T16:07:23.000050181-07:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-04-07T16:07:23.476872962-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-04-07T16:07:23.814924706-07:00","level":"INFO","msg":"handler: closed","stream_id":"gtybasze"}
+{"time":"2025-04-07T16:07:23.814973755-07:00","level":"INFO","msg":"writer: Close: closed","stream_id":"gtybasze"}
+{"time":"2025-04-07T16:07:23.814989013-07:00","level":"INFO","msg":"sender: closed","stream_id":"gtybasze"}
+{"time":"2025-04-07T16:07:23.81512881-07:00","level":"INFO","msg":"stream: closed","id":"gtybasze"}

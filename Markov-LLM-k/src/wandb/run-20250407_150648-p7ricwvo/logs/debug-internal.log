@@ -1,0 +1,7 @@
+{"time":"2025-04-07T15:06:48.659319803-07:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"/home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_150648-p7ricwvo/logs/debug-core.log"}
+{"time":"2025-04-07T15:06:48.979380498-07:00","level":"INFO","msg":"created new stream","id":"p7ricwvo"}
+{"time":"2025-04-07T15:06:48.979542062-07:00","level":"INFO","msg":"stream: started","id":"p7ricwvo"}
+{"time":"2025-04-07T15:06:48.979645802-07:00","level":"INFO","msg":"writer: Do: started","stream_id":"p7ricwvo"}
+{"time":"2025-04-07T15:06:48.979779744-07:00","level":"INFO","msg":"handler: started","stream_id":"p7ricwvo"}
+{"time":"2025-04-07T15:06:48.979956879-07:00","level":"INFO","msg":"sender: started","stream_id":"p7ricwvo"}
+{"time":"2025-04-07T15:06:49.21879804-07:00","level":"INFO","msg":"Starting system monitor"}

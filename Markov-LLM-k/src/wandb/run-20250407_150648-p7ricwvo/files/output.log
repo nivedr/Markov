@@ -1,0 +1,36 @@
+
+Training model=base
+{'config_format': 'markov', 'tokenizer': 'BPE', 'alphabet_size': 2, 'max_dict_size': 2, 'dataset_size': 10000, 'transition': 'random', 'interpolation': 0.1, 'batch_size': 8, 'acc_steps': 1, 'seed': 0, 'device': device(type='cuda', index=0), 'iterations': 30, 'lr': 0.002, 'warmup_percent': 0.02, 'weight_decay': 0.001, 'beta1': 0.9, 'beta2': 0.95, 'scheduler': 'cos', 'opt': 'adamw', 'eval_freq': 1, 'results_base_folder': './exps', 'grad_clip': 0.0, 'dataset': 'markov', 'data_in_ram': True, 'model': 'base', 'use_pretrained': 'none', 'dropout': 0, 'n_head': 3, 'n_layer': 3, 'n_embd': 30, 'sequence_length': 200, 'dtype': torch.float16, 'bias': False, 'no_compile': False, 'wandb': True, 'wandb_project': 'nivedr-ucb/Markov-val-k-vs-iter', 'wandb_run_prefix': 'none', 'eval_seq_prefix': '0', 'distributed_backend': None, 'p': 0.8, 'q': 0.8, 'order': 2, 'memory': -1, 'estimate_p': False, 'bce': False, 'initial': 'steady', 'no_tying': False, 'P': tensor([[0.6995, 0.3005],
+        [0.3484, 0.6516],
+        [0.4312, 0.5688],
+        [0.1924, 0.8076]]), 'vocab_size': 2, 'world_size': 1}
+
+16892
+Training transformer...
+Compiling model ...
+Start training ...
+delimiter
+1
+delimiter
+2
+delimiter
+3
+delimiter
+4
+delimiter
+5
+delimiter
+6
+delimiter
+7
+delimiter
+8
+delimiter
+W0407 15:07:01.577000 2052684 torch/_dynamo/convert_frame.py:906] [0/8] torch._dynamo hit config.cache_size_limit (8)
+W0407 15:07:01.577000 2052684 torch/_dynamo/convert_frame.py:906] [0/8]    function: 'forward' (/home/nived/projects/Markov/Markov-LLM-k/src/models/base.py:258)
+W0407 15:07:01.577000 2052684 torch/_dynamo/convert_frame.py:906] [0/8]    last reason: 0/0: L['self'].iter == 0
+W0407 15:07:01.577000 2052684 torch/_dynamo/convert_frame.py:906] [0/8] To log all recompilation reasons, use TORCH_LOGS="recompiles".
+W0407 15:07:01.577000 2052684 torch/_dynamo/convert_frame.py:906] [0/8] To diagnose recompilation issues, see https://pytorch.org/docs/main/torch.compiler_troubleshooting.html.
+9
+delimiter
+10

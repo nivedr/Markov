@@ -1,0 +1,16 @@
+2025-04-07 14:54:55,781 INFO    MainThread:2050346 [wandb_setup.py:_flush():67] Current SDK version is 0.19.9
+2025-04-07 14:54:55,781 INFO    MainThread:2050346 [wandb_setup.py:_flush():67] Configure stats pid to 2050346
+2025-04-07 14:54:55,781 INFO    MainThread:2050346 [wandb_setup.py:_flush():67] Loading settings from /home/nived/.config/wandb/settings
+2025-04-07 14:54:55,781 INFO    MainThread:2050346 [wandb_setup.py:_flush():67] Loading settings from /home/nived/projects/Markov/Markov-LLM-k/src/wandb/settings
+2025-04-07 14:54:55,781 INFO    MainThread:2050346 [wandb_setup.py:_flush():67] Loading settings from environment variables
+2025-04-07 14:54:55,782 INFO    MainThread:2050346 [wandb_init.py:setup_run_log_directory():662] Logging user logs to /home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_145455-7nrh4z5c/logs/debug.log
+2025-04-07 14:54:55,782 INFO    MainThread:2050346 [wandb_init.py:setup_run_log_directory():663] Logging internal logs to /home/nived/projects/Markov/Markov-LLM-k/src/wandb/run-20250407_145455-7nrh4z5c/logs/debug-internal.log
+2025-04-07 14:54:55,782 INFO    MainThread:2050346 [wandb_init.py:init():781] calling init triggers
+2025-04-07 14:54:55,782 INFO    MainThread:2050346 [wandb_init.py:init():786] wandb.init called with sweep_config: {}
+config: {'learning_rate': 0.02, 'architecture': 'CNN', 'dataset': 'CIFAR-100', 'epochs': 10, '_wandb': {}}
+2025-04-07 14:54:55,782 INFO    MainThread:2050346 [wandb_init.py:init():809] starting backend
+2025-04-07 14:54:55,782 INFO    MainThread:2050346 [wandb_init.py:init():813] sending inform_init request
+2025-04-07 14:54:55,798 INFO    MainThread:2050346 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-04-07 14:54:55,799 INFO    MainThread:2050346 [wandb_init.py:init():823] backend started and connected
+2025-04-07 14:54:55,800 INFO    MainThread:2050346 [wandb_init.py:init():915] updated telemetry
+2025-04-07 14:54:55,809 INFO    MainThread:2050346 [wandb_init.py:init():939] communicating run to backend with 90.0 second timeout

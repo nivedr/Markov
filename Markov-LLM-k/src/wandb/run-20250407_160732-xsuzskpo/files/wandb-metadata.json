@@ -1,0 +1,112 @@
+{
+  "os": "Linux-6.8.0-56-generic-x86_64-with-glibc2.39",
+  "python": "CPython 3.10.16",
+  "startedAt": "2025-04-07T23:07:32.870176Z",
+  "args": [
+    "--p",
+    "0.8",
+    "--q",
+    "0.8",
+    "--n_layer",
+    "4",
+    "--n_head",
+    "3",
+    "--n_embd",
+    "30",
+    "--sequence_length",
+    "200",
+    "--order",
+    "3",
+    "--max_dict_size",
+    "2",
+    "--data_in_ram",
+    "--iterations",
+    "3000",
+    "--batch_size",
+    "8",
+    "--acc_steps",
+    "1",
+    "--transition",
+    "random",
+    "--wandb"
+  ],
+  "program": "/home/nived/projects/Markov/Markov-LLM-k/src/main.py",
+  "codePath": "Markov-LLM-k/src/main.py",
+  "git": {
+    "remote": "https://github.com/nivedr/Markov.git",
+    "commit": "5e7256dbeb1588eeb44fd93f4b471e4cee863714"
+  },
+  "email": "nived.rajaraman@gmail.com",
+  "root": "/home/nived/projects/Markov/Markov-LLM-k/src",
+  "host": "jiaolab",
+  "executable": "/home/nived/projects/Markov/.venv/bin/python",
+  "codePathLocal": "main.py",
+  "cpu_count": 64,
+  "cpu_count_logical": 128,
+  "gpu": "NVIDIA A100 80GB PCIe",
+  "gpu_count": 8,
+  "disk": {
+    "/": {
+      "total": "7557149999104",
+      "used": "2526207721472"
+    }
+  },
+  "memory": {
+    "total": "1081806639104"
+  },
+  "cpu": {
+    "count": 64,
+    "countLogical": 128
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    },
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    },
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    },
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    },
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    },
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    },
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    },
+    {
+      "name": "NVIDIA A100 80GB PCIe",
+      "memoryTotal": "85899345920",
+      "cudaCores": 6912,
+      "architecture": "Ampere"
+    }
+  ],
+  "cudaVersion": "12.4"
+}

@@ -1,0 +1,98 @@
+
+Training model=base
+{'config_format': 'markov', 'tokenizer': 'BPE', 'alphabet_size': 2, 'max_dict_size': 2, 'dataset_size': 10000, 'transition': 'random', 'interpolation': 0.1, 'batch_size': 8, 'acc_steps': 1, 'seed': 0, 'device': device(type='cuda', index=0), 'iterations': 30, 'lr': 0.002, 'warmup_percent': 0.02, 'weight_decay': 0.001, 'beta1': 0.9, 'beta2': 0.95, 'scheduler': 'cos', 'opt': 'adamw', 'eval_freq': 1, 'results_base_folder': './exps', 'grad_clip': 0.0, 'dataset': 'markov', 'data_in_ram': True, 'model': 'base', 'use_pretrained': 'none', 'dropout': 0, 'n_head': 3, 'n_layer': 2, 'n_embd': 30, 'sequence_length': 200, 'dtype': torch.float16, 'bias': False, 'no_compile': False, 'wandb': True, 'wandb_project': 'nivedr-ucb/Markov-val-k-vs-iter', 'wandb_run_prefix': 'none', 'eval_seq_prefix': '0', 'distributed_backend': None, 'p': 0.8, 'q': 0.8, 'order': 2, 'memory': -1, 'estimate_p': False, 'bce': False, 'initial': 'steady', 'no_tying': False, 'P': tensor([[0.6182, 0.3818],
+        [0.6252, 0.3748],
+        [0.1300, 0.8700],
+        [0.8983, 0.1017]]), 'vocab_size': 2, 'world_size': 1}
+
+13292
+Training transformer...
+Compiling model ...
+Start training ...
+delimiter
+1
+delimiter
+2
+delimiter
+3
+delimiter
+4
+delimiter
+5
+delimiter
+6
+delimiter
+7
+delimiter
+8
+delimiter
+W0407 15:06:12.299000 2051665 torch/_dynamo/convert_frame.py:906] [0/8] torch._dynamo hit config.cache_size_limit (8)
+W0407 15:06:12.299000 2051665 torch/_dynamo/convert_frame.py:906] [0/8]    function: 'forward' (/home/nived/projects/Markov/Markov-LLM-k/src/models/base.py:258)
+W0407 15:06:12.299000 2051665 torch/_dynamo/convert_frame.py:906] [0/8]    last reason: 0/0: L['self'].iter == 0
+W0407 15:06:12.299000 2051665 torch/_dynamo/convert_frame.py:906] [0/8] To log all recompilation reasons, use TORCH_LOGS="recompiles".
+W0407 15:06:12.299000 2051665 torch/_dynamo/convert_frame.py:906] [0/8] To diagnose recompilation issues, see https://pytorch.org/docs/main/torch.compiler_troubleshooting.html.
+9
+delimiter
+10
+10 [train] loss=0.676 [val] loss=0.680, pp=1.97, acc=0.571796 [time per itr] 9811.20ms [lr] 0.00155
+delimiter
+11
+delimiter
+12
+delimiter
+13
+delimiter
+14
+delimiter
+15
+delimiter
+16
+delimiter
+17
+delimiter
+18
+delimiter
+19
+delimiter
+20
+20 [train] loss=0.669 [val] loss=0.677, pp=1.97, acc=0.569504 [time per itr] 536.42ms [lr] 0.00074
+delimiter
+21
+delimiter
+22
+delimiter
+23
+delimiter
+24
+delimiter
+25
+delimiter
+26
+delimiter
+27
+delimiter
+28
+delimiter
+29
+delimiter
+30
+30 [train] loss=0.681 [val] loss=0.678, pp=1.97, acc=0.567714 [time per itr] 537.45ms [lr] 0.00040
+saving checkpoint to ./exps/markov/base/base_lr0.002_bs8x1_1nodes_seed=0/ckpt.pt
+Traceback (most recent call last):
+  File "/home/nived/projects/Markov/Markov-LLM-k/src/main.py", line 221, in <module>
+    main(args)
+  File "/home/nived/projects/Markov/Markov-LLM-k/src/main.py", line 216, in main
+    json.dump(stats, fs)
+  File "/home/nived/.local/share/uv/python/cpython-3.10.16-linux-x86_64-gnu/lib/python3.10/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/home/nived/.local/share/uv/python/cpython-3.10.16-linux-x86_64-gnu/lib/python3.10/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/home/nived/.local/share/uv/python/cpython-3.10.16-linux-x86_64-gnu/lib/python3.10/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/home/nived/.local/share/uv/python/cpython-3.10.16-linux-x86_64-gnu/lib/python3.10/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/home/nived/.local/share/uv/python/cpython-3.10.16-linux-x86_64-gnu/lib/python3.10/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/home/nived/.local/share/uv/python/cpython-3.10.16-linux-x86_64-gnu/lib/python3.10/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type Tensor is not JSON serializable
